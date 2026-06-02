@@ -319,13 +319,13 @@
   "use strict";
 
   /* =========================================================================
-     CONFIG — set these when the backend is chosen. Until then both stay null
-     and everything falls back to localStorage + console so the demo still works.
-       WAITLIST_ENDPOINT — POST {email, ...attribution}. Returns 2xx on success.
-       ANALYTICS_ENDPOINT — POST {event, ...attribution, ...props} per event.
+     CONFIG — Google Sheet via Apps Script Web App. Paste the deployed /exec URL
+     below. One endpoint handles both waitlist signups and analytics events; the
+     Apps Script routes by payload `type` ("waitlist" -> Waitlist tab, else Events).
+     While null, everything falls back to localStorage + console so the demo works.
+     Setup script: setup/waitlist-sink.gs
      ========================================================================= */
-  var WAITLIST_ENDPOINT = null;   // e.g. "https://api.hiublue.com/waitlist"
-  var ANALYTICS_ENDPOINT = null;  // e.g. "https://api.hiublue.com/track"
+  var SHEET_ENDPOINT = null;  // e.g. "https://script.google.com/macros/s/AKfy.../exec"
 
   /* ---- attribution: first-touch UTM + referrer, captured once, then reused ---- */
   function parseQuery(){
@@ -357,20 +357,22 @@
   }
   var ATTR = attribution();
 
-  /* ---- event tracking: beacon to endpoint if set, else localStorage + console ---- */
-  function track(event, props){
-    var payload = Object.assign({event:event, ts:new Date().toISOString()}, ATTR, props||{});
-    var sent=false;
-    if(ANALYTICS_ENDPOINT){
-      var body=JSON.stringify(payload);
-      if(navigator.sendBeacon){
-        try{ sent=navigator.sendBeacon(ANALYTICS_ENDPOINT, new Blob([body],{type:'application/json'})); }catch(_){}
-      }
-      if(!sent){
-        try{ fetch(ANALYTICS_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:body,keepalive:true}); sent=true; }catch(_){}
-      }
+  /* ---- transport: POST as text/plain so Apps Script gets the body without a
+     CORS preflight. Fire-and-forget; we don't read the response. ---- */
+  function post(payload){
+    if(!SHEET_ENDPOINT) return false;
+    var body=JSON.stringify(payload);
+    if(navigator.sendBeacon){
+      try{ if(navigator.sendBeacon(SHEET_ENDPOINT, new Blob([body],{type:'text/plain;charset=UTF-8'}))) return true; }catch(_){}
     }
-    if(!sent){
+    try{ fetch(SHEET_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:body,keepalive:true}); return true; }catch(_){}
+    return false;
+  }
+
+  /* ---- event tracking: post to sheet if set, else localStorage + console ---- */
+  function track(event, props){
+    var payload = Object.assign({type:'event', event:event, ts:new Date().toISOString()}, ATTR, props||{});
+    if(!post(payload)){
       try{
         var log=JSON.parse(localStorage.getItem('hb_events')||'[]');
         log.push(payload); localStorage.setItem('hb_events', JSON.stringify(log));
@@ -382,13 +384,9 @@
   /* ---- waitlist capture ---- */
   var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   function submitLead(email, source){
-    var lead=Object.assign({email:email, source:source, ts:new Date().toISOString()}, ATTR);
-    if(WAITLIST_ENDPOINT){
-      try{
-        fetch(WAITLIST_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(lead),keepalive:true});
-      }catch(_){}
-    }else{
-      // Mock store so the demo feels real until the backend is wired.
+    var lead=Object.assign({type:'waitlist', email:email, source:source, ts:new Date().toISOString()}, ATTR);
+    if(!post(lead)){
+      // Mock store so the demo feels real until the endpoint is wired.
       try{
         var list=JSON.parse(localStorage.getItem('hb_waitlist')||'[]');
         list.push(lead); localStorage.setItem('hb_waitlist', JSON.stringify(list));
