@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>hiublue — content engine A/B board</title>
+<style>
+  :root{--ink:#08090b;--ink2:#131418;--ink3:#1c1d22;--blue:#3d5df8;--violet:#b4a4ff;--white:#f7f8f8;--muted:#7a828b;--line:rgba(255,255,255,.10)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;background:var(--ink);color:var(--white);padding:48px 24px;line-height:1.5}
+  .head{max-width:1180px;margin:0 auto 36px}
+  .mark{font-weight:800;font-size:30px;letter-spacing:-.03em}
+  .mark .hiu{background:linear-gradient(120deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tag{color:var(--muted);font-size:14px;letter-spacing:.04em;margin-top:6px}
+  .lead{color:var(--muted);font-size:15px;margin-top:18px;max-width:70ch}
+  .lead b{color:var(--white)}
+  .grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:24px}
+  .card{background:linear-gradient(180deg,var(--ink3),var(--ink2));border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+  video{width:100%;aspect-ratio:9/16;background:#000;display:block}
+  .body{padding:18px 18px 20px}
+  .vid{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--violet);letter-spacing:.04em}
+  .angle{font-weight:700;font-size:16px;margin:6px 0 4px;letter-spacing:-.01em}
+  .hook{color:var(--muted);font-size:14px;white-space:pre-line;margin-bottom:14px}
+  .linkrow{display:flex;gap:8px;align-items:center}
+  input.link{flex:1;background:var(--ink);border:1px solid var(--line);border-radius:10px;color:var(--white);font-size:12px;padding:9px 10px;font-family:ui-monospace,Menlo,monospace}
+  button.copy{border:1px solid var(--blue);background:rgba(61,93,248,.14);color:var(--white);border-radius:10px;padding:9px 12px;font-size:12px;cursor:pointer;white-space:nowrap}
+  button.copy:hover{background:rgba(61,93,248,.26)}
+  .meta{margin-top:10px;font-size:12px;color:var(--muted)}
+  .meta code{color:var(--white);background:var(--ink);border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+  .foot{max-width:1180px;margin:40px auto 0;color:var(--muted);font-size:13px;line-height:1.7}
+  a{color:var(--violet)}
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="mark"><span class="hiu">hiu</span>blue</div>
+    <div class="tag">CONTENT ENGINE · A/B BOARD · VIDEO TEMPLATE v1</div>
+    <p class="lead">Four hook angles, one template. Post each video on its channel with its <b>tracking link</b> below. Every signup carries the variant's <b>utm_campaign</b>, so the Waitlist tab in the Google Sheet tells you which hook converts. Pivot the sheet by <code>utm_campaign</code> to rank winners.</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="foot">
+    The centre panel is a placeholder for Ralph's AI avatar clip (Phase 3). Links point at the live waitlist page; swap <code>utm_source</code> per platform (ig, youtube, linkedin) if you want channel-level breakdown too.
+  </div>
+
+<script>
+  var BASE = "https://juwanhiublue.github.io/content-engine-preview/";
+  var variants = [
+    { id:"v1-shift",      angle:"The shift: operate tools to managing a team", hook:"Stop operating tools.\nStart managing a team." },
+    { id:"v2-overwhelm",  angle:"Pain to relief: drowning in follow-ups",       hook:"You didn't start a business\nto chase follow-ups." },
+    { id:"v3-always-on",  angle:"Always-on: answer hot leads in seconds, 24/7", hook:"Your best hire\nworks while you sleep." },
+    { id:"v4-headcount",  angle:"Outcome: a full team without the headcount",   hook:"The team you always wanted.\nWithout the headcount." }
+  ];
+  function trackUrl(id){
+    return BASE + "?utm_source=social&utm_medium=video&utm_campaign=" + id + "&utm_content=" + id;
+  }
+  var grid = document.getElementById("grid");
+  variants.forEach(function(v){
+    var url = trackUrl(v.id);
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML =
+      '<video src="'+v.id+'.mp4" controls muted loop playsinline preload="metadata"></video>' +
+      '<div class="body">' +
+        '<div class="vid">'+v.id+'</div>' +
+        '<div class="angle">'+v.angle+'</div>' +
+        '<div class="hook">'+v.hook+'</div>' +
+        '<div class="linkrow">' +
+          '<input class="link" readonly value="'+url+'">' +
+          '<button class="copy">Copy</button>' +
+        '</div>' +
+        '<div class="meta">campaign: <code>'+v.id+'</code></div>' +
+      '</div>';
+    var btn = card.querySelector("button.copy");
+    var inp = card.querySelector("input.link");
+    btn.addEventListener("click", function(){
+      inp.select();
+      navigator.clipboard.writeText(url).then(function(){ btn.textContent="Copied"; setTimeout(function(){btn.textContent="Copy";},1200); });
+    });
+    grid.appendChild(card);
+  });
+</script>
+</body>
+</html>
