@@ -6,17 +6,19 @@
 <title>hiublue — Hire AI employees that actually do the work</title>
 <style>
   :root{
-    /* Brand palette — blue-ish black. PLACEHOLDER hexes, confirm against real hiublue brand. */
-    --ink:#0A0E1A;          /* near-black base */
-    --ink-2:#0E1424;        /* panel */
-    --ink-3:#141C30;        /* raised panel */
+    /* Brand palette — pulled from the live hiublue UI. */
+    --ink:#08090b;          /* near-black base */
+    --ink-2:#131418;        /* panel */
+    --ink-3:#1c1d22;        /* raised panel */
     --line:rgba(255,255,255,.08);
-    --blue:#4F7CFF;         /* primary accent */
-    --blue-2:#6E97FF;
-    --glow:rgba(79,124,255,.35);
-    --white:#F4F7FF;
-    --muted:#9AA6C2;
-    --muted-2:#6B7796;
+    --line-2:#3f454d;
+    --blue:#3d5df8;         /* primary accent */
+    --blue-2:#b4a4ff;       /* violet */
+    --grad:linear-gradient(120deg,var(--blue),var(--blue-2));
+    --glow:rgba(61,93,248,.35);
+    --white:#f7f8f8;
+    --muted:#7a828b;
+    --muted-2:#5b626b;
     --radius:16px;
     --max:1120px;
   }
@@ -37,34 +39,35 @@
     font-size:12px;letter-spacing:.16em;text-transform:uppercase;
     color:var(--blue-2);font-weight:600;
     border:1px solid var(--line);border-radius:999px;
-    padding:7px 14px;background:rgba(79,124,255,.06);
+    padding:7px 14px;background:rgba(61,93,248,.06);
   }
-  .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px var(--glow)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px var(--glow);animation:pulse 2.4s ease-in-out infinite}
+
+  /* brand wordmark — matches the live logo: gradient "hiu", white "blue" */
+  .brandword{font-weight:800;letter-spacing:-.02em}
+  .brandword .hiu{
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
 
   /* NAV */
   nav{
     position:sticky;top:0;z-index:50;
     backdrop-filter:blur(12px);
-    background:rgba(10,14,26,.72);
+    background:rgba(8,9,11,.72);
     border-bottom:1px solid var(--line);
   }
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;letter-spacing:-.01em}
-  .logo .mark{
-    width:26px;height:26px;border-radius:8px;
-    background:linear-gradient(135deg,var(--blue),#2D4FC7);
-    box-shadow:0 4px 18px var(--glow);
-    display:inline-block;
-  }
+  .logo{display:flex;align-items:center;gap:10px;font-size:19px}
   .nav-links{display:flex;align-items:center;gap:28px;font-size:14px;color:var(--muted)}
+  .nav-links a{transition:color .15s ease}
   .nav-links a:hover{color:var(--white)}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;gap:8px;
     font-weight:600;font-size:15px;cursor:pointer;border:none;
-    border-radius:12px;padding:12px 20px;transition:transform .15s ease,box-shadow .15s ease;
+    border-radius:12px;padding:12px 20px;transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
   }
-  .btn-primary{background:linear-gradient(135deg,var(--blue),#3358D4);color:#fff;box-shadow:0 8px 24px var(--glow)}
-  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 30px var(--glow)}
+  .btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 24px var(--glow)}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 34px var(--glow);filter:brightness(1.06)}
   .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--white)}
   .btn-ghost:hover{border-color:var(--blue)}
 
@@ -75,19 +78,27 @@
     width:900px;height:600px;border-radius:50%;
     background:radial-gradient(circle,var(--glow),transparent 60%);
     filter:blur(30px);pointer-events:none;z-index:0;
+    animation:floatGlow 9s ease-in-out infinite;
   }
   .hero .wrap{position:relative;z-index:1}
   h1{
     font-size:clamp(38px,6vw,68px);line-height:1.04;letter-spacing:-.03em;
     font-weight:800;margin:22px auto 0;max-width:14ch;
   }
-  h1 .grad{background:linear-gradient(120deg,#fff 30%,var(--blue-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  h1 .grad,.promise .grad{
+    background:linear-gradient(120deg,#fff 10%,var(--blue-2) 55%,var(--blue) 90%);
+    background-size:220% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shimmer 7s linear infinite;
+  }
   .sub{font-size:clamp(17px,2.2vw,21px);color:var(--muted);max-width:60ch;margin:22px auto 0}
 
   form.capture{
     display:flex;gap:10px;max-width:480px;margin:34px auto 0;
     background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:8px;
+    transition:border-color .18s ease,box-shadow .18s ease;
   }
+  form.capture:focus-within{border-color:var(--blue);box-shadow:0 0 0 4px rgba(61,93,248,.12)}
   form.capture input{
     flex:1;background:transparent;border:none;outline:none;color:var(--white);
     font-size:15px;padding:0 12px;
@@ -95,12 +106,14 @@
   form.capture input::placeholder{color:var(--muted-2)}
   .form-note{font-size:13px;color:var(--muted-2);margin-top:14px}
   .success{display:none;margin:34px auto 0;max-width:480px;padding:16px;border-radius:14px;
-    background:rgba(79,124,255,.10);border:1px solid var(--blue);color:var(--white);font-weight:500}
+    background:rgba(61,93,248,.10);border:1px solid var(--blue);color:var(--white);font-weight:500;
+    animation:fadeUp .5s ease both}
 
   /* logos / audience strip */
   .audience{margin-top:54px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
-  .pill{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 16px;background:var(--ink-2)}
-  .pill.hot{color:#fff;border-color:var(--blue);background:rgba(79,124,255,.12)}
+  .pill{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 16px;background:var(--ink-2);transition:transform .15s ease,border-color .15s ease}
+  .pill:hover{transform:translateY(-2px);border-color:var(--line-2)}
+  .pill.hot{color:#fff;border-color:var(--blue);background:rgba(61,93,248,.12)}
 
   /* SECTION */
   section{padding:84px 0;position:relative}
@@ -114,7 +127,7 @@
   .shift .col h3{font-size:13px;text-transform:uppercase;letter-spacing:.12em;padding:14px 16px;color:var(--muted-2)}
   .shift .col.new h3{color:var(--blue-2)}
   .shift .row{padding:14px 16px;border-top:1px solid var(--line);font-size:15px}
-  .shift .col.new{background:linear-gradient(180deg,rgba(79,124,255,.07),transparent);border-color:rgba(79,124,255,.25)}
+  .shift .col.new{background:linear-gradient(180deg,rgba(61,93,248,.07),transparent);border-color:rgba(61,93,248,.25)}
   .shift .col.new .row{color:var(--white)}
   .shift .col.old .row{color:var(--muted)}
 
@@ -123,11 +136,11 @@
   .card{
     background:linear-gradient(180deg,var(--ink-3),var(--ink-2));
     border:1px solid var(--line);border-radius:var(--radius);padding:26px;
-    transition:transform .18s ease,border-color .18s ease;
+    transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
   }
-  .card:hover{transform:translateY(-3px);border-color:rgba(79,124,255,.4)}
+  .card:hover{transform:translateY(-3px);border-color:rgba(61,93,248,.4);box-shadow:0 14px 40px rgba(0,0,0,.4)}
   .card .ic{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;
-    background:rgba(79,124,255,.12);font-size:20px;margin-bottom:16px}
+    background:rgba(61,93,248,.12);font-size:20px;margin-bottom:16px}
   .card h3{font-size:18px;margin-bottom:8px;letter-spacing:-.01em}
   .card p{color:var(--muted);font-size:15px}
 
@@ -135,7 +148,6 @@
   .band{background:linear-gradient(135deg,var(--ink-2),var(--ink-3));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .band .wrap{text-align:center;padding:8px 0}
   .promise{font-size:clamp(24px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;max-width:20ch;margin:0 auto}
-  .promise .grad{background:linear-gradient(120deg,var(--blue-2),#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
 
   /* final cta */
   .final{text-align:center}
@@ -146,6 +158,29 @@
   .foot-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
   .mock-flag{position:fixed;bottom:14px;right:14px;z-index:99;font-size:12px;color:var(--muted);
     background:var(--ink-3);border:1px solid var(--line);border-radius:999px;padding:8px 14px}
+
+  /* ---- animations ---- */
+  @keyframes floatGlow{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(26px)}}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 12px var(--glow)}50%{opacity:.45;box-shadow:0 0 3px var(--glow)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes shimmer{to{background-position:220% center}}
+
+  /* hero entrance stagger */
+  .anim{opacity:0;animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) both}
+  .d1{animation-delay:.05s}.d2{animation-delay:.16s}.d3{animation-delay:.28s}
+  .d4{animation-delay:.4s}.d5{animation-delay:.52s}.d6{animation-delay:.64s}
+
+  /* scroll reveal */
+  [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+  [data-reveal].in{opacity:1;transform:none}
+  [data-reveal].in.s1{transition-delay:.08s}
+  [data-reveal].in.s2{transition-delay:.16s}
+  [data-reveal].in.s3{transition-delay:.24s}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important}
+    .anim,[data-reveal]{opacity:1 !important;transform:none !important}
+  }
 
   @media(max-width:780px){
     .nav-links{display:none}
@@ -159,7 +194,7 @@
 
 <nav>
   <div class="wrap nav-inner">
-    <div class="logo"><span class="mark"></span> hiublue</div>
+    <div class="logo"><span class="brandword"><span class="hiu">hiu</span>blue</span></div>
     <div class="nav-links">
       <a href="#shift">Why hiublue</a>
       <a href="#workers">Your workers</a>
@@ -172,18 +207,18 @@
 <header class="hero">
   <div class="hero-glow"></div>
   <div class="wrap">
-    <span class="eyebrow"><span class="dot"></span> AI workforce for agencies and sales teams</span>
-    <h1>Hire AI employees that <span class="grad">actually do the work.</span></h1>
-    <p class="sub">hiublue is where you build a team of AI workers who live inside your business. They reach out, reply, follow up, book the meeting, and remember everything. Not another app you operate. A team you manage.</p>
+    <span class="eyebrow anim d1"><span class="dot"></span> AI workforce for agencies and sales teams</span>
+    <h1 class="anim d2">Hire AI employees that <span class="grad">actually do the work.</span></h1>
+    <p class="sub anim d3">hiublue is where you build a team of AI workers who live inside your business. They reach out, reply, follow up, book the meeting, and remember everything. Not another app you operate. A team you manage.</p>
 
-    <form class="capture" id="waitlist" autocomplete="off">
+    <form class="capture anim d4" id="waitlist" autocomplete="off">
       <input type="email" id="email" placeholder="you@agency.com" required />
       <button type="submit" class="btn btn-primary">Get early access</button>
     </form>
-    <div class="form-note">Built for agencies and sales teams. No card. We will reach out before launch.</div>
+    <div class="form-note anim d5">Built for agencies and sales teams. No card. We will reach out before launch.</div>
     <div class="success" id="success">You are on the list. We will be in touch before launch.</div>
 
-    <div class="audience">
+    <div class="audience anim d6">
       <span class="pill hot">Agencies</span>
       <span class="pill hot">Sales teams</span>
       <span class="pill">Recruiters</span>
@@ -195,12 +230,12 @@
 
 <section id="shift">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <h2>Stop operating tools. Start managing a team.</h2>
       <p>Every outbound business runs the same grind across a dozen tabs. hiublue replaces the chaos with a workforce.</p>
     </div>
     <div class="shift">
-      <div class="col old">
+      <div class="col old" data-reveal>
         <h3>The old way</h3>
         <div class="row">You operate software</div>
         <div class="row">A tool for every channel</div>
@@ -208,7 +243,7 @@
         <div class="row">Hire, train, churn, repeat</div>
         <div class="row">Work stops when you sleep</div>
       </div>
-      <div class="col new">
+      <div class="col new s1" data-reveal>
         <h3>The hiublue way</h3>
         <div class="row">You manage workers</div>
         <div class="row">One team, every channel</div>
@@ -222,46 +257,46 @@
 
 <section id="workers" style="background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <h2>Meet your workers</h2>
       <p>A hiublue worker is not a feature. It is a hire. You give it a name, and it goes to work.</p>
     </div>
     <div class="grid">
-      <div class="card"><div class="ic">🧠</div><h3>A memory that never resets</h3><p>Tell it once. It knows forever: your offers, your customers, your do's and don'ts.</p></div>
-      <div class="card"><div class="ic">📱</div><h3>Its own phone and voice</h3><p>It texts, iMessages, and calls like a real teammate. You can even clone your own voice.</p></div>
-      <div class="card"><div class="ic">🌐</div><h3>A seat in every channel</h3><p>Email, LinkedIn, SMS, iMessage, Instagram, Facebook, Telegram. One worker, working everywhere.</p></div>
-      <div class="card"><div class="ic">⚡</div><h3>It acts, it does not suggest</h3><p>Not "here is a draft." Done, sent, booked. Real outcomes, not busywork.</p></div>
-      <div class="card"><div class="ic">📨</div><h3>One inbox for everything</h3><p>Every conversation, every channel, in a single place. It handles the easy ones, flags what needs you.</p></div>
-      <div class="card"><div class="ic">📈</div><h3>It gets smarter every day</h3><p>The objection that worked, the deal you closed. Your business knowledge compounds instead of walking out the door.</p></div>
+      <div class="card" data-reveal><div class="ic">🧠</div><h3>A memory that never resets</h3><p>Tell it once. It knows forever: your offers, your customers, your do's and don'ts.</p></div>
+      <div class="card s1" data-reveal><div class="ic">📱</div><h3>Its own phone and voice</h3><p>It texts, iMessages, and calls like a real teammate. You can even clone your own voice.</p></div>
+      <div class="card s2" data-reveal><div class="ic">🌐</div><h3>A seat in every channel</h3><p>Email, LinkedIn, SMS, iMessage, Instagram, Facebook, Telegram. One worker, working everywhere.</p></div>
+      <div class="card" data-reveal><div class="ic">⚡</div><h3>It acts, it does not suggest</h3><p>Not "here is a draft." Done, sent, booked. Real outcomes, not busywork.</p></div>
+      <div class="card s1" data-reveal><div class="ic">📨</div><h3>One inbox for everything</h3><p>Every conversation, every channel, in a single place. It handles the easy ones, flags what needs you.</p></div>
+      <div class="card s2" data-reveal><div class="ic">📈</div><h3>It gets smarter every day</h3><p>The objection that worked, the deal you closed. Your business knowledge compounds instead of walking out the door.</p></div>
     </div>
   </div>
 </section>
 
 <section id="feel">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <h2>What it feels like to run on hiublue</h2>
       <p>You direct. They deliver. You check the Brief in the morning to see what got done.</p>
     </div>
     <div class="grid">
-      <div class="card"><div class="ic">☀️</div><h3>Your morning Brief</h3><p>The three things that actually need you today. No 200-message inbox. Just what moved and what needs you.</p></div>
-      <div class="card"><div class="ic">🚀</div><h3>Outreach that runs itself</h3><p>Drop in a list. Your worker launches the campaign across LinkedIn, email, and DMs, paced and personalized.</p></div>
-      <div class="card"><div class="ic">📅</div><h3>Books the meeting for you</h3><p>A lead says yes. Your worker reads your calendar, offers times, confirms, and sends the invite. You show up.</p></div>
+      <div class="card" data-reveal><div class="ic">☀️</div><h3>Your morning Brief</h3><p>The three things that actually need you today. No 200-message inbox. Just what moved and what needs you.</p></div>
+      <div class="card s1" data-reveal><div class="ic">🚀</div><h3>Outreach that runs itself</h3><p>Drop in a list. Your worker launches the campaign across LinkedIn, email, and DMs, paced and personalized.</p></div>
+      <div class="card s2" data-reveal><div class="ic">📅</div><h3>Books the meeting for you</h3><p>A lead says yes. Your worker reads your calendar, offers times, confirms, and sends the invite. You show up.</p></div>
     </div>
   </div>
 </section>
 
 <div class="band">
   <section class="wrap">
-    <p class="promise">Your business, <span class="grad">fully staffed</span> by tomorrow morning.</p>
+    <p class="promise" data-reveal>Your business, <span class="grad">fully staffed</span> by tomorrow morning.</p>
   </section>
 </div>
 
 <section id="join" class="final">
   <div class="wrap">
-    <h2>Be first on hiublue.</h2>
-    <p>We are onboarding agencies and sales teams ahead of launch.</p>
-    <form class="capture" id="waitlist2" autocomplete="off">
+    <h2 data-reveal>Be first on hiublue.</h2>
+    <p class="s1" data-reveal>We are onboarding agencies and sales teams ahead of launch.</p>
+    <form class="capture s2" id="waitlist2" autocomplete="off" data-reveal>
       <input type="email" id="email2" placeholder="you@agency.com" required />
       <button type="submit" class="btn btn-primary">Join the waitlist</button>
     </form>
@@ -271,7 +306,7 @@
 
 <footer>
   <div class="wrap foot-inner">
-    <div class="logo"><span class="mark"></span> hiublue</div>
+    <div class="logo"><span class="brandword"><span class="hiu">hiu</span>blue</span></div>
     <div>The team you always wanted, without the headcount.</div>
     <div>© 2026 hiublue</div>
   </div>
@@ -299,6 +334,14 @@
   }
   wire('waitlist','email','success');
   wire('waitlist2','email2','success2');
+
+  // Scroll reveal
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}
+    });
+  },{threshold:.14});
+  document.querySelectorAll('[data-reveal]').forEach(function(el){io.observe(el);});
 </script>
 </body>
 </html>
