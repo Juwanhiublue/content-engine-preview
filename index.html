@@ -315,19 +315,101 @@
 <div class="mock-flag">Mock for team review · waitlist is a front-end demo</div>
 
 <script>
+(function(){
+  "use strict";
+
+  /* =========================================================================
+     CONFIG — set these when the backend is chosen. Until then both stay null
+     and everything falls back to localStorage + console so the demo still works.
+       WAITLIST_ENDPOINT — POST {email, ...attribution}. Returns 2xx on success.
+       ANALYTICS_ENDPOINT — POST {event, ...attribution, ...props} per event.
+     ========================================================================= */
+  var WAITLIST_ENDPOINT = null;   // e.g. "https://api.hiublue.com/waitlist"
+  var ANALYTICS_ENDPOINT = null;  // e.g. "https://api.hiublue.com/track"
+
+  /* ---- attribution: first-touch UTM + referrer, captured once, then reused ---- */
+  function parseQuery(){
+    var q={}, s=location.search.replace(/^\?/,'');
+    if(!s) return q;
+    s.split('&').forEach(function(pair){
+      var kv=pair.split('=');
+      if(kv[0]) q[decodeURIComponent(kv[0])]=decodeURIComponent((kv[1]||'').replace(/\+/g,' '));
+    });
+    return q;
+  }
+  function attribution(){
+    var stored;
+    try{ stored=JSON.parse(localStorage.getItem('hb_attribution')||'null'); }catch(_){ stored=null; }
+    if(stored) return stored;
+    var q=parseQuery();
+    var a={
+      utm_source:   q.utm_source   || null,
+      utm_medium:   q.utm_medium   || null,
+      utm_campaign: q.utm_campaign || null,   // maps to a content variant
+      utm_content:  q.utm_content  || null,   // hook / creative id
+      utm_term:     q.utm_term     || null,
+      referrer:     document.referrer || null,
+      landing_path: location.pathname + location.search,
+      first_seen:   new Date().toISOString()
+    };
+    try{ localStorage.setItem('hb_attribution', JSON.stringify(a)); }catch(_){}
+    return a;
+  }
+  var ATTR = attribution();
+
+  /* ---- event tracking: beacon to endpoint if set, else localStorage + console ---- */
+  function track(event, props){
+    var payload = Object.assign({event:event, ts:new Date().toISOString()}, ATTR, props||{});
+    var sent=false;
+    if(ANALYTICS_ENDPOINT){
+      var body=JSON.stringify(payload);
+      if(navigator.sendBeacon){
+        try{ sent=navigator.sendBeacon(ANALYTICS_ENDPOINT, new Blob([body],{type:'application/json'})); }catch(_){}
+      }
+      if(!sent){
+        try{ fetch(ANALYTICS_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:body,keepalive:true}); sent=true; }catch(_){}
+      }
+    }
+    if(!sent){
+      try{
+        var log=JSON.parse(localStorage.getItem('hb_events')||'[]');
+        log.push(payload); localStorage.setItem('hb_events', JSON.stringify(log));
+      }catch(_){}
+      if(window.console&&console.debug) console.debug('[hb:track]', event, payload);
+    }
+  }
+
+  /* ---- waitlist capture ---- */
+  var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function submitLead(email, source){
+    var lead=Object.assign({email:email, source:source, ts:new Date().toISOString()}, ATTR);
+    if(WAITLIST_ENDPOINT){
+      try{
+        fetch(WAITLIST_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(lead),keepalive:true});
+      }catch(_){}
+    }else{
+      // Mock store so the demo feels real until the backend is wired.
+      try{
+        var list=JSON.parse(localStorage.getItem('hb_waitlist')||'[]');
+        list.push(lead); localStorage.setItem('hb_waitlist', JSON.stringify(list));
+      }catch(_){}
+    }
+    track('waitlist_submit', {source:source});
+  }
   function wire(formId, emailId, successId){
     var f=document.getElementById(formId);
     if(!f)return;
+    var input=document.getElementById(emailId);
     f.addEventListener('submit',function(e){
       e.preventDefault();
-      var val=document.getElementById(emailId).value.trim();
-      if(!val)return;
-      // Mock capture: store locally so the demo feels real. Real backend comes in the build.
-      try{
-        var list=JSON.parse(localStorage.getItem('hb_waitlist')||'[]');
-        list.push({email:val,ts:Date.now()});
-        localStorage.setItem('hb_waitlist',JSON.stringify(list));
-      }catch(_){}
+      var val=(input.value||'').trim();
+      if(!EMAIL_RE.test(val)){
+        input.style.boxShadow='0 0 0 2px #cd5757'; input.focus();
+        track('waitlist_invalid', {source:formId});
+        setTimeout(function(){ input.style.boxShadow=''; }, 1400);
+        return;
+      }
+      submitLead(val, formId);
       f.style.display='none';
       document.getElementById(successId).style.display='block';
     });
@@ -335,13 +417,31 @@
   wire('waitlist','email','success');
   wire('waitlist2','email2','success2');
 
-  // Scroll reveal
+  /* ---- CTA click tracking ---- */
+  document.querySelectorAll('.btn-primary').forEach(function(b){
+    b.addEventListener('click',function(){ track('cta_click', {label:(b.textContent||'').trim()}); });
+  });
+
+  /* ---- scroll-depth milestones ---- */
+  var marks=[25,50,75,100], hit={};
+  function onScroll(){
+    var h=document.documentElement;
+    var pct=Math.round((h.scrollTop+window.innerHeight)/h.scrollHeight*100);
+    marks.forEach(function(m){ if(pct>=m && !hit[m]){ hit[m]=1; track('scroll_depth',{percent:m}); } });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* ---- page view ---- */
+  track('page_view', {title:document.title});
+
+  /* ---- scroll reveal animation ---- */
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(en){
       if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}
     });
   },{threshold:.14});
   document.querySelectorAll('[data-reveal]').forEach(function(el){io.observe(el);});
+})();
 </script>
 </body>
 </html>
