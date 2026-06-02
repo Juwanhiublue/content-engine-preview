@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>hiublue — content engine video draft</title>
+<style>
+  :root{--ink:#08090b;--ink2:#131418;--blue:#3d5df8;--violet:#b4a4ff;--white:#f7f8f8;--muted:#7a828b;--line:rgba(255,255,255,.10)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;background:var(--ink);color:var(--white);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;gap:24px}
+  .mark{font-weight:800;font-size:26px;letter-spacing:-.03em}
+  .mark .hiu{background:linear-gradient(120deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tag{color:var(--muted);font-size:14px;letter-spacing:.04em}
+  .stage{position:relative;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.55)}
+  video{display:block;width:auto;height:78vh;max-height:860px;background:#000}
+  .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .pill{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 16px;background:var(--ink2)}
+  a.dl{font-size:13px;color:var(--white);border:1px solid var(--blue);border-radius:999px;padding:8px 16px;text-decoration:none;background:rgba(61,93,248,.12)}
+  .note{color:var(--muted);font-size:13px;max-width:520px;text-align:center;line-height:1.6}
+</style>
+</head>
+<body>
+  <div class="mark"><span class="hiu">hiu</span>blue</div>
+  <div class="tag">CONTENT ENGINE · VIDEO TEMPLATE DRAFT</div>
+  <div class="stage">
+    <video src="hiublue-short.mp4" controls autoplay muted loop playsinline></video>
+  </div>
+  <div class="row">
+    <span class="pill">9:16 · 1080×1920 · ~20s</span>
+    <span class="pill">HiublueShort template v1</span>
+    <a class="dl" href="hiublue-short.mp4" download>Download MP4</a>
+  </div>
+  <p class="note">Mock for review. The centre panel is a placeholder where Ralph's AI avatar clip drops in (Phase 3). Captions, intro, outro, palette and timing are all data-driven from one variant config.</p>
+</body>
+</html>
