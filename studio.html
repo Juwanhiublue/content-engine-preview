@@ -91,19 +91,31 @@
   .badge.attention{color:var(--warn);border-color:rgba(245,181,74,.4)}
   .mono{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--muted);word-break:break-all}
   .note{font-size:12.5px;color:var(--warn);margin-top:8px}
-  /* content preview reels */
-  .reels{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+  /* content preview reels — animated players (recreate the Remotion composition) */
+  .reels{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px}
   .reelwrap{display:flex;flex-direction:column}
-  .reel{position:relative;aspect-ratio:9/16;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(165deg,var(--ink3),var(--ink));padding:12px;display:flex;flex-direction:column;justify-content:space-between}
-  .reel-bg{position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 28%, var(--accent), transparent 62%);opacity:.32}
-  .reel-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center}
-  .reel-mark{font-weight:800;font-size:12px;letter-spacing:-.01em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .reel-badge{font-size:9px;color:var(--white);background:rgba(0,0,0,.45);border:1px solid var(--line);border-radius:999px;padding:2px 7px}
-  .reel-hook{position:relative;z-index:1;font-weight:800;font-size:15px;line-height:1.14;white-space:pre-line;text-shadow:0 2px 12px rgba(0,0,0,.6)}
-  .reel-cap{position:relative;z-index:1;align-self:center;text-align:center;font-size:11px;font-weight:600;color:var(--white);background:rgba(0,0,0,.4);border-radius:7px;padding:5px 8px;backdrop-filter:blur(2px)}
-  .reel-bottom{position:relative;z-index:1;display:flex;flex-direction:column;gap:5px;align-items:center}
-  .reel-cta{font-size:11px;font-weight:700;background:var(--grad);color:#fff;border-radius:999px;padding:6px 12px}
-  .reel-handle{font-size:9px;color:rgba(255,255,255,.7)}
+  .reel{position:relative;aspect-ratio:9/16;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#0a0b0e;cursor:pointer;font-family:var(--font)}
+  .reel *{position:absolute}
+  .reel .r-bg{inset:0;background:radial-gradient(120% 70% at 50% 32%, var(--a,#3d5df8), transparent 60%);opacity:.5;transition:opacity .3s}
+  .reel .r-vig{inset:0;background:radial-gradient(circle at 50% 42%, transparent 54%, rgba(0,0,0,.6))}
+  .reel .r-scrim{left:0;right:0;bottom:0;height:55%;background:linear-gradient(180deg,transparent,rgba(8,9,11,.92))}
+  .reel .r-badge{top:12px;left:12px;font-size:8.5px;color:#fff;background:rgba(0,0,0,.5);border:1px solid var(--line);border-radius:999px;padding:3px 8px}
+  .reel .r-head{top:13px;right:12px;font-size:11px;font-weight:800;background:linear-gradient(120deg,var(--a),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .reel .r-intro{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:14px;text-align:center}
+  .reel .r-imark{font-size:13px;font-weight:800;background:linear-gradient(120deg,var(--a),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .reel .r-ihook{font-size:15px;font-weight:800;line-height:1.12;white-space:pre-line;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+  .reel .r-cap{left:10px;right:10px;bottom:34%;text-align:center;font-size:14px;font-weight:800;line-height:1.16;text-shadow:0 3px 16px rgba(0,0,0,.7)}
+  .reel .r-cap span{display:inline-block;margin-right:.2em;color:rgba(247,248,248,.4)}
+  .reel .r-cap span.shown{color:#fff}
+  .reel .r-cap span.act{background-image:linear-gradient(120deg,var(--a),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent;transform:scale(1.08)}
+  .reel .r-prog{left:12px;right:12px;bottom:30%;height:4px;border-radius:999px;background:rgba(255,255,255,.14)}
+  .reel .r-prog i{position:absolute;left:0;top:0;height:100%;width:0;border-radius:999px;background:linear-gradient(120deg,var(--a),var(--a2))}
+  .reel .r-outro{inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:14px;text-align:center}
+  .reel .r-omark{font-size:14px;font-weight:800;background:linear-gradient(120deg,var(--a),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .reel .r-cta{font-size:13px;font-weight:800;background:linear-gradient(120deg,var(--a),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent;white-space:pre-line}
+  .reel .r-pill{font-size:10px;font-weight:700;color:#fff;background:linear-gradient(120deg,var(--a),var(--a2));border-radius:999px;padding:5px 11px}
+  .reel .r-handle{font-size:8.5px;color:rgba(255,255,255,.6)}
+  .reel .r-play{inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;color:rgba(255,255,255,.85);opacity:0;pointer-events:none;text-shadow:0 2px 12px rgba(0,0,0,.6)}
   .reel-actions{display:flex;gap:6px;margin-top:8px}
   .reel-actions button{flex:1;font-size:11px;font-weight:600;border-radius:8px;padding:7px 4px;cursor:pointer;border:1px solid var(--line);background:var(--ink3);color:var(--muted);transition:.12s}
   .reel-actions button:hover{border-color:var(--accent)}
@@ -254,23 +266,10 @@ function run(){
 
   const vcards=variants.map(v=>`<div class="vcard"><div class="angle">${esc(v.angle)}</div><div class="hook">${esc(v.hook)}</div><ul>${v.lines.map(l=>`<li>${esc(l.text)}</li>`).join('')}</ul><div class="cta">${esc(v.cta)} · ${esc(f.handle)}</div></div>`).join('');
 
-  // Visual content preview — each piece rendered as the branded 9:16 reel it
-  // becomes, so the client REVIEWS content, not a table. (Storyboard frame; the
-  // final MP4 is produced by the render stage.)
-  const reels=variants.map((v,i)=>{
-    const dur=Math.round(1.6+v.lines.reduce((s,l)=>s+l.seconds,0)+3);
-    const cap=v.lines[0]?v.lines[0].text:'';
-    return `<div class="reelwrap">
-      <div class="reel">
-        <div class="reel-bg"></div>
-        <div class="reel-top"><span class="reel-mark">${esc(f.business)}</span><span class="reel-badge">▶ ${dur}s</span></div>
-        <div class="reel-hook">${esc(v.hook)}</div>
-        <div class="reel-cap">${esc(cap)}</div>
-        <div class="reel-bottom"><span class="reel-cta">${esc(f.cta)}</span><span class="reel-handle">${esc(f.handle)} · AI persona</span></div>
-      </div>
-      <div class="reel-actions"><button class="appr" data-i="${i}">Approve</button><button class="rej" data-i="${i}">Edit</button></div>
-    </div>`;
-  }).join('');
+  // Visual content preview — each piece PLAYS as the branded 9:16 reel it becomes
+  // (intro hook -> word-by-word captions -> CTA outro), a browser recreation of
+  // the real Remotion composition. The client reviews content, not a table.
+  const reels=variants.map((v,i)=>`<div class="reelwrap"><div class="reel" id="reel${i}"></div><div class="reel-actions"><button class="appr" data-i="${i}">Approve</button><button class="rej" data-i="${i}">Edit</button></div></div>`).join('');
 
   let posts=[];
   variants.forEach((v,i)=>f.channels.forEach(ch=>posts.push({v:v.id,ch,t:times[i],link:utm(f.url,ch,v.id,slug)})));
@@ -325,6 +324,9 @@ function run(){
     approved.delete(i);a.classList.remove('on');a.textContent='Approve';refresh();
   });
 
+  // Play each preview as the real animated reel.
+  variants.forEach((v,i)=>makeReel(document.getElementById('reel'+i),{accent:f.accent,accent2:f.accent2,business:f.business,handle:f.handle,url:f.url,hook:v.hook,lines:v.lines,cta:v.cta,ctaLabel:f.cta}));
+
   // Reliable scroll to the result (scrollIntoView is flaky in mobile webviews).
   const out=document.getElementById('out');
   const top=out.getBoundingClientRect().top+window.pageYOffset-12;
@@ -354,6 +356,63 @@ function loadSample(){
   document.getElementById('cta').value='Book this week';
   [...document.querySelectorAll('#channels .chk')].forEach(c=>c.classList.toggle('on',['instagram','facebook','tiktok'].includes(c.dataset.v)));
   safeRun();
+}
+
+// Animated reel player — recreates the Remotion ShortVideo timeline in the
+// browser: intro hook (1.6s) -> body with word-by-word karaoke captions -> CTA
+// outro (3s), looping. Tap to pause/play.
+function makeReel(el, d){
+  if(!el) return;
+  const INTRO=1.6, OUTRO=3.0;
+  const body=d.lines.reduce((s,l)=>s+l.seconds,0);
+  const total=INTRO+body+OUTRO, LOOP=total+0.6;
+  el.style.setProperty('--a', d.accent);
+  el.style.setProperty('--a2', d.accent2);
+  el.innerHTML=`
+    <div class="r-bg"></div><div class="r-vig"></div><div class="r-scrim"></div>
+    <div class="r-badge">● ${esc(d.business)} · AI</div>
+    <div class="r-head">${esc(d.business)}</div>
+    <div class="r-intro"><div class="r-imark">${esc(d.business)}</div><div class="r-ihook">${esc(d.hook)}</div></div>
+    <div class="r-cap"></div>
+    <div class="r-prog"><i></i></div>
+    <div class="r-outro"><div class="r-omark">${esc(d.business)}</div><div class="r-cta">${esc(d.cta)}</div><div class="r-pill">${esc(d.ctaLabel)}</div><div class="r-handle">${esc(d.url||'')} · ${esc(d.handle)}</div></div>
+    <div class="r-play">▶</div>`;
+  const q=s=>el.querySelector(s);
+  const intro=q('.r-intro'),cap=q('.r-cap'),outro=q('.r-outro'),prog=q('.r-prog>i'),progEl=q('.r-prog'),
+        badge=q('.r-badge'),head=q('.r-head'),bg=q('.r-bg'),play=q('.r-play');
+  let acc=INTRO; const segs=d.lines.map(l=>{const s=acc;acc+=l.seconds;return{start:s,len:l.seconds,text:l.text};});
+  let curLine=-1;
+  const lerp=(a,b,x)=>a+(b-a)*Math.max(0,Math.min(1,x));
+  function buildLine(i){curLine=i;cap.innerHTML=segs[i].text.split(' ').map(w=>`<span>${esc(w)}</span>`).join(' ');}
+  let running=true, start=performance.now(), elapsed=0;
+  function loop(now){
+    if(!running) return;
+    const t=((now-start)/1000)%LOOP;
+    const inIntro=t<INTRO, inBody=t>=INTRO&&t<INTRO+body, inOutro=t>=INTRO+body&&t<total;
+    intro.style.opacity=inIntro?1:0;
+    outro.style.opacity=inOutro?1:0;
+    const bv=inBody?1:0;
+    badge.style.opacity=bv;head.style.opacity=bv;progEl.style.opacity=bv;
+    bg.style.opacity=inBody?0.85:0.5;
+    if(inBody){
+      const si=segs.findIndex(s=>t>=s.start&&t<s.start+s.len);
+      if(si>=0){
+        if(si!==curLine) buildLine(si);
+        const s=segs[si], local=t-s.start, dd=s.len;
+        const frac=(local-dd*0.1)/(dd*0.72-dd*0.1);
+        const words=cap.children, last=Math.floor(lerp(0,words.length-1,frac));
+        for(let i=0;i<words.length;i++) words[i].className=(i===last?'act':i<last?'shown':'');
+        cap.style.opacity=Math.max(0,Math.min(1,local/0.25,(dd-local)/0.27));
+      }
+      prog.style.width=(100*(t-INTRO)/body)+'%';
+    } else curLine=-1;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  el.addEventListener('click',()=>{
+    if(running){running=false;elapsed=performance.now()-start;play.style.opacity=1;}
+    else{running=true;start=performance.now()-elapsed;play.style.opacity=0;requestAnimationFrame(loop);}
+  });
 }
 
 document.getElementById('run').onclick=safeRun;
