@@ -49,6 +49,18 @@
   input[type=color]{width:42px;height:36px;background:none;border:1px solid var(--line);border-radius:8px;padding:2px;cursor:pointer}
   .consent{display:flex;gap:9px;align-items:flex-start;margin-top:16px;font-size:13px;color:var(--muted)}
   .consent input{margin-top:3px}
+  .kbsec{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 0 16px;margin:18px 0}
+  .kbsec h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent2)}
+  .hint{font-size:12px;color:var(--muted);margin:0 0 6px}
+  .drop{border:1px dashed var(--line);border-radius:10px;padding:16px;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;transition:.15s}
+  .drop.over,.drop:hover{border-color:var(--accent);background:rgba(61,93,248,.06)}
+  .drop .link{color:var(--accent2);text-decoration:underline}
+  .kblist{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .kbitem{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;background:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 10px}
+  .kbitem .nm{color:var(--white);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px}
+  .kbitem .wc{color:var(--muted);font-size:11px;white-space:nowrap;margin-left:8px}
+  .kbitem .x{color:var(--muted);cursor:pointer;margin-left:8px}
+  input[type=file]{font-size:12px;color:var(--muted)}
   .btn{width:100%;margin-top:20px;border:none;border-radius:12px;background:var(--grad);color:#fff;font-weight:700;font-size:15px;padding:14px;cursor:pointer;box-shadow:0 10px 30px rgba(61,93,248,.35)}
   .btn.sec{background:var(--ink3);color:var(--white);border:1px solid var(--line);box-shadow:none;margin-top:10px}
 
@@ -154,6 +166,20 @@
       <label>The problem you remove for them (optional)</label>
       <input type="text" id="problem" placeholder="e.g. no time to train consistently" />
 
+      <div class="kbsec">
+        <h2 style="margin:18px 0 4px">Knowledge base</h2>
+        <div class="hint">What the worker learns the business from. The more it has, the more on-voice the content.</div>
+        <label>Company docs (.md / .txt)</label>
+        <div id="kbdrop" class="drop"><span>Drop files here or <span class="link">browse</span></span><input type="file" id="kbfiles" multiple accept=".md,.markdown,.txt" hidden></div>
+        <div id="kblist" class="kblist"></div>
+        <label>Or paste background / business model / offers</label>
+        <textarea id="kbpaste" placeholder="Mission, offers, ICP, tone, FAQs, do's and don'ts, proof points..."></textarea>
+        <div class="row" style="margin-top:14px">
+          <div><label>Spokesperson photo</label><input type="file" id="kbphoto" accept="image/*" /></div>
+          <div><label>Voice sample</label><input type="file" id="kbaudio" accept="audio/*" /></div>
+        </div>
+      </div>
+
       <label>Brand color</label>
       <div class="colorrow">
         <input type="color" id="accent" value="#3d5df8" />
@@ -203,6 +229,22 @@ function setAccent(a,b){document.documentElement.style.setProperty('--accent',a)
 // channel chips
 document.querySelectorAll('#channels .chk').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
 
+// knowledge base ingest — read .md/.txt client-side into the KB
+const kb=[]; // {name, words, text}
+const kblist=document.getElementById('kblist');
+const wc=t=>(String(t).trim().match(/\S+/g)||[]).length;
+function renderKb(){
+  kblist.innerHTML=kb.map((s,i)=>`<div class="kbitem"><span class="nm">${esc(s.name)}</span><span class="wc">${s.words} words <span class="x" data-i="${i}">✕</span></span></div>`).join('');
+  kblist.querySelectorAll('.x').forEach(x=>x.onclick=()=>{kb.splice(+x.dataset.i,1);renderKb();});
+}
+function addFiles(files){[...files].forEach(file=>{const r=new FileReader();r.onload=()=>{kb.push({name:file.name,words:wc(r.result),text:r.result});renderKb();};r.readAsText(file);});}
+const kbdrop=document.getElementById('kbdrop'), kbfiles=document.getElementById('kbfiles');
+kbdrop.onclick=()=>kbfiles.click();
+kbfiles.onchange=()=>addFiles(kbfiles.files);
+['dragenter','dragover'].forEach(ev=>kbdrop.addEventListener(ev,e=>{e.preventDefault();kbdrop.classList.add('over');}));
+['dragleave','drop'].forEach(ev=>kbdrop.addEventListener(ev,e=>{e.preventDefault();kbdrop.classList.remove('over');}));
+kbdrop.addEventListener('drop',e=>{if(e.dataTransfer&&e.dataTransfer.files.length)addFiles(e.dataTransfer.files);});
+
 function readForm(){
   const channels=[...document.querySelectorAll('#channels .chk.on')].map(c=>c.dataset.v);
   return {
@@ -218,6 +260,11 @@ function readForm(){
     url:document.getElementById('url').value.trim()||'yoursite.com',
     cta:document.getElementById('cta').value.trim()||'Learn more',
     consent:document.getElementById('consent').checked,
+    kb:kb.slice(),
+    paste:document.getElementById('kbpaste').value.trim(),
+    pasteWords:wc(document.getElementById('kbpaste').value),
+    photo:(document.getElementById('kbphoto').files[0]||{}).name||'',
+    audio:(document.getElementById('kbaudio').files[0]||{}).name||'',
   };
 }
 
@@ -277,9 +324,22 @@ function run(){
 
   const renders=variants.map(v=>`<tr><td class="mono">${slug}__${esc(v.id)}</td><td><span class="badge queued">queued (CI render)</span></td></tr>`).join('');
 
-  const avatarStatus = f.consent
-    ? `<span class="badge queued">queued for soul-id generation</span> — upload a photo + voice clip and the engine builds the persona.`
-    : `<span class="badge attention">blocked</span> — consent required before creating an AI avatar/voice.`;
+  const avatarStatus = !f.consent
+    ? `<span class="badge attention">blocked</span> — consent required before creating an AI avatar/voice.`
+    : (f.photo && f.audio)
+      ? `<span class="badge queued">assets received</span> — photo (${esc(f.photo)}) + voice (${esc(f.audio)}). Soul-id generation queued.`
+      : `<span class="badge queued">queued for soul-id generation</span> — add a spokesperson photo + voice clip and the engine builds the persona.`;
+
+  // Knowledge base summary
+  const kbWords = f.kb.reduce((s,k)=>s+k.words,0) + f.pasteWords;
+  const kbCount = f.kb.length + (f.paste?1:0);
+  const kbRows = f.kb.map(k=>`<div class="kbitem"><span class="nm">${esc(k.name)}</span><span class="wc">${k.words} words</span></div>`).join('')
+    + (f.paste?`<div class="kbitem"><span class="nm">Pasted background</span><span class="wc">${f.pasteWords} words</span></div>`:'');
+  const kbCard = `<div class="stage"><h3>Intake — knowledge base</h3>${
+    kbCount
+      ? `<div style="font-size:13.5px;color:var(--muted);margin-bottom:10px">${kbCount} source${kbCount>1?'s':''} · ${kbWords} words ingested. The LLM scripting stage writes from this, so the more it has, the more on-voice the content.</div><div class="kblist">${kbRows}</div>`
+      : `<div class="note">No knowledge base added. Drop in company docs (.md/.txt) or paste background so the engine writes in the business's real voice, not generic copy.</div>`
+  }</div>`;
 
   document.getElementById('out').innerHTML=`
     <div class="hero">
@@ -293,6 +353,8 @@ function run(){
     <div class="stage"><h3>Content preview — for review <span class="editlink" id="apprstat">0 of ${variants.length} approved</span></h3>
       <div class="reels">${reels}</div>
       <div class="note">This is what each post looks like, branded to you. Approve the ones to ship; approved pieces flow to the schedule. Final video is rendered from this storyboard by the engine.</div></div>
+
+    ${kbCard}
 
     <div class="stage"><h3>Script — ${variants.length} starter variants <span class="editlink" id="regen">↻ regenerate</span></h3><div class="vcards">${vcards}</div>
       <div class="note">Starter angles, branded to your business. Final copy is written by the LLM scripting stage from your full knowledge base.</div></div>
