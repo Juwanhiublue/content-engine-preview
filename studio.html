@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Content Engine · Studio</title>
+<style>
+  :root{
+    --ink:#08090b; --ink2:#131418; --ink3:#1c1d22;
+    --line:rgba(255,255,255,.10); --white:#f7f8f8; --muted:#7a828b;
+    --accent:#3d5df8; --accent2:#b4a4ff;
+    --ok:#3ddc84; --warn:#f5b54a; --pending:#5b6472;
+    --grad:linear-gradient(120deg,var(--accent),var(--accent2));
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--white);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1200px;margin:0 auto;padding:26px 22px 90px}
+  a{color:var(--accent2);text-decoration:none}
+
+  .top{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:22px}
+  .brandmark{font-weight:800;font-size:26px;letter-spacing:-.02em}
+  .brandmark .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);font-size:14px;margin-top:4px}
+  .tabs{display:flex;gap:8px;margin-top:14px}
+  .tab{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:7px 14px}
+  .tab.on{color:#fff;border-color:var(--accent);background:rgba(61,93,248,.12)}
+
+  .banner{font-size:12.5px;color:var(--muted);background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:20px}
+  .banner b{color:var(--accent2)}
+
+  .cols{display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start}
+  @media(max-width:900px){.cols{grid-template-columns:1fr}}
+
+  /* form */
+  .panel{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .panel h2{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent2);margin-bottom:16px}
+  label{display:block;font-size:12.5px;color:var(--muted);margin:14px 0 5px;font-weight:600}
+  label:first-of-type{margin-top:0}
+  input[type=text],input[type=number],textarea,select{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:10px;color:var(--white);font-family:var(--font);font-size:14px;padding:10px 12px;outline:none}
+  input:focus,textarea:focus{border-color:var(--accent)}
+  textarea{resize:vertical;min-height:60px}
+  .row{display:flex;gap:10px}
+  .row>div{flex:1}
+  .chks{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .chk{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer;color:var(--muted);user-select:none}
+  .chk.on{color:#fff;border-color:var(--accent);background:rgba(61,93,248,.12)}
+  .colorrow{display:flex;align-items:center;gap:10px}
+  input[type=color]{width:42px;height:36px;background:none;border:1px solid var(--line);border-radius:8px;padding:2px;cursor:pointer}
+  .consent{display:flex;gap:9px;align-items:flex-start;margin-top:16px;font-size:13px;color:var(--muted)}
+  .consent input{margin-top:3px}
+  .btn{width:100%;margin-top:20px;border:none;border-radius:12px;background:var(--grad);color:#fff;font-weight:700;font-size:15px;padding:14px;cursor:pointer;box-shadow:0 10px 30px rgba(61,93,248,.35)}
+  .btn.sec{background:var(--ink3);color:var(--white);border:1px solid var(--line);box-shadow:none;margin-top:10px}
+
+  /* output */
+  .empty{color:var(--muted);font-size:14px;padding:40px;text-align:center;border:1px dashed var(--line);border-radius:16px}
+  .hero{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:6px}
+  .hero h1{font-size:26px;letter-spacing:-.02em}
+  .chip{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 11px;background:var(--ink2)}
+  .chip b{color:var(--white);font-weight:600}
+
+  .rail{position:relative;display:grid;grid-template-columns:repeat(7,1fr);margin:24px 0 6px}
+  .node{position:relative;text-align:center;padding-top:28px}
+  .node::before{content:"";position:absolute;top:11px;left:50%;width:100%;height:2px;background:var(--line)}
+  .node:last-child::before{display:none}
+  .node .bead{position:absolute;top:4px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;background:var(--pending);border:3px solid var(--ink);z-index:2}
+  .node.ok .bead{background:var(--ok);box-shadow:0 0 14px var(--ok)}
+  .node.attention .bead{background:var(--warn);box-shadow:0 0 14px var(--warn)}
+  .node .lbl{font-size:12px;color:var(--muted);font-weight:600}
+  .pulse{position:absolute;top:8px;left:0;width:9px;height:9px;border-radius:50%;background:var(--accent2);box-shadow:0 0 12px var(--accent2);animation:flow 4.5s linear infinite;z-index:3}
+  @keyframes flow{0%{left:0;opacity:0}6%{opacity:1}94%{opacity:1}100%{left:calc(100% - 9px);opacity:0}}
+
+  .stage{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:20px;margin-top:14px}
+  .stage h3{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent2);margin-bottom:12px}
+  .vcards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:620px){.vcards{grid-template-columns:1fr}}
+  .vcard{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--ink3)}
+  .vcard .angle{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+  .vcard .hook{font-size:16px;font-weight:800;margin:5px 0 8px;white-space:pre-line}
+  .vcard ul{list-style:none;margin:0 0 8px}
+  .vcard li{font-size:13px;color:var(--muted);padding:2px 0 2px 15px;position:relative}
+  .vcard li::before{content:"";position:absolute;left:0;top:10px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+  .vcard .cta{font-size:13px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:7px 9px;border-bottom:1px solid var(--line)}
+  td{padding:8px 9px;border-bottom:1px solid var(--line)}
+  td.muted{color:var(--muted)}
+  .svc{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;background:rgba(61,93,248,.14);color:var(--accent2);text-transform:capitalize}
+  .badge{font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .badge.scheduled,.badge.ready,.badge.queued{color:var(--accent2);border-color:rgba(180,164,255,.4)}
+  .badge.attention{color:var(--warn);border-color:rgba(245,181,74,.4)}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--muted);word-break:break-all}
+  .note{font-size:12.5px;color:var(--warn);margin-top:8px}
+  .editlink{font-size:12px;color:var(--accent2);cursor:pointer;float:right}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brandmark"><span class="g">Content Engine</span> · Studio</div>
+    <div class="sub">Plug in a business. Watch the engine draft a branded, scheduled, multi-channel content plan.</div>
+    <div class="tabs">
+      <a class="tab on" href="./studio.html">Studio (try it)</a>
+      <a class="tab" href="./console.html">Console (live tenants)</a>
+    </div>
+  </div>
+
+  <div class="banner">
+    <b>What's live here:</b> the engine brands the plan to your business, writes starter scripts you can edit, and lays out the full weekly schedule with per-channel UTM tracking. <b>Server-side stages</b> (final LLM-written scripts, avatar generation, video render, and the real posting to your accounts) run in the pipeline, not in this browser preview.
+  </div>
+
+  <div class="cols">
+    <!-- FORM -->
+    <div class="panel">
+      <h2>Your business</h2>
+      <label>Business name</label>
+      <input type="text" id="business" placeholder="e.g. Reyes Strength" />
+
+      <label>What you do (one line)</label>
+      <input type="text" id="offer" placeholder="e.g. personal training that fits a busy schedule" />
+
+      <label>Who you're trying to reach</label>
+      <input type="text" id="audience" placeholder="e.g. busy professionals who want to get strong" />
+
+      <label>The problem you remove for them (optional)</label>
+      <input type="text" id="problem" placeholder="e.g. no time to train consistently" />
+
+      <label>Brand color</label>
+      <div class="colorrow">
+        <input type="color" id="accent" value="#3d5df8" />
+        <input type="color" id="accent2" value="#b4a4ff" />
+        <span class="sub">primary · secondary</span>
+      </div>
+
+      <label>Channels</label>
+      <div class="chks" id="channels">
+        <span class="chk on" data-v="instagram">Instagram</span>
+        <span class="chk on" data-v="youtube">YouTube</span>
+        <span class="chk" data-v="tiktok">TikTok</span>
+        <span class="chk" data-v="facebook">Facebook</span>
+        <span class="chk" data-v="linkedin">LinkedIn</span>
+      </div>
+
+      <div class="row" style="margin-top:14px">
+        <div><label>Posts / week</label><input type="number" id="ppw" value="3" min="1" max="14" /></div>
+        <div><label>Handle</label><input type="text" id="handle" placeholder="@yourbrand" /></div>
+      </div>
+
+      <div class="row" style="margin-top:14px">
+        <div><label>Destination URL</label><input type="text" id="url" placeholder="yoursite.com" /></div>
+        <div><label>Button label</label><input type="text" id="cta" placeholder="Book a call" /></div>
+      </div>
+
+      <div class="consent">
+        <input type="checkbox" id="consent" checked />
+        <label for="consent" style="margin:0">I have permission to create an AI avatar + voice of the on-camera person (required to generate the persona).</label>
+      </div>
+
+      <button class="btn" id="run">Run the engine ▸</button>
+      <button class="btn sec" id="sample">Load a sample business</button>
+    </div>
+
+    <!-- OUTPUT -->
+    <div id="out"><div class="empty">Fill in your business on the left and hit <b>Run the engine</b>. The plan generates here, branded to you.</div></div>
+  </div>
+</div>
+
+<script>
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function cap(s){s=String(s||'').trim();return s?s[0].toUpperCase()+s.slice(1):s;}
+function fmtTime(d){return d.toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});}
+function setAccent(a,b){document.documentElement.style.setProperty('--accent',a);document.documentElement.style.setProperty('--accent2',b);}
+
+// channel chips
+document.querySelectorAll('#channels .chk').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
+
+function readForm(){
+  const channels=[...document.querySelectorAll('#channels .chk.on')].map(c=>c.dataset.v);
+  return {
+    business:document.getElementById('business').value.trim()||'Your Business',
+    offer:document.getElementById('offer').value.trim()||'what you do',
+    audience:document.getElementById('audience').value.trim()||'your customers',
+    problem:document.getElementById('problem').value.trim(),
+    accent:document.getElementById('accent').value,
+    accent2:document.getElementById('accent2').value,
+    channels:channels.length?channels:['instagram'],
+    ppw:Math.max(1,+document.getElementById('ppw').value||3),
+    handle:document.getElementById('handle').value.trim()||('@'+(document.getElementById('business').value.trim().toLowerCase().replace(/[^a-z0-9]+/g,'')||'yourbrand')),
+    url:document.getElementById('url').value.trim()||'yoursite.com',
+    cta:document.getElementById('cta').value.trim()||'Learn more',
+    consent:document.getElementById('consent').checked,
+  };
+}
+
+// Mirrors the engine's scripting seam: starter A/B angles, parameterized by the
+// business. Final copy comes from the LLM scripting stage server-side; these are
+// editable starting points.
+function genVariants(f){
+  const B=f.business, A=f.audience, O=f.offer.toLowerCase(), P=f.problem||'doing it all yourself';
+  const v=(id,angle,hook,lines)=>({id,angle,hook,lines:lines.map(t=>({text:t,seconds:2.5})),cta:f.cta});
+  return [
+    v('a1-problem','Problem → relief',
+      `${cap(P)}\nis costing you customers.`,
+      [`${cap(A)} expect a brand that shows up.`, `Most owners can't keep that pace alone.`, `${cap(O)} — produced and posted for you.`, `Consistent presence. Zero grind.`]),
+    v('a2-outcome','Outcome',
+      `${cap(B)},\non autopilot.`,
+      [`No filming days. No editing nights.`, `Your face, your voice, your brand.`, `On-brand video, posted every week.`, `You approve. The engine does the rest.`]),
+    v('a3-authority','Niche authority',
+      `If you run ${B},\nthis is for you.`,
+      [`${cap(A)} scroll past generic content.`, `They stop for someone who gets them.`, `That's how ${B} will sound now.`, `${cap(O)}, tuned to your niche.`]),
+    v('a4-proof','Move now',
+      `Your competitors are posting.\nAre you?`,
+      [`Attention compounds. So does silence.`, `${B} shows up daily, on every channel.`, `While you focus on the work.`, `${cap(f.cta)} today.`]),
+  ];
+}
+
+function utm(url,channel,campaign,content){
+  const base=url.startsWith('http')?url:'https://'+url;
+  try{const u=new URL(base);u.searchParams.set('utm_source',channel);u.searchParams.set('utm_medium','social');u.searchParams.set('utm_campaign',campaign);u.searchParams.set('utm_content',content);return u.toString().replace('https://','');}catch(e){return base;}
+}
+
+function schedule(n,ppw){
+  const out=[];const start=new Date(Date.now()+864e5);const step=Math.floor(7*864e5/Math.max(1,ppw));
+  for(let i=0;i<n;i++)out.push(new Date(start.getTime()+i*step));
+  return out;
+}
+
+function run(){
+  const f=readForm();
+  setAccent(f.accent,f.accent2);
+  const variants=genVariants(f);
+  const slug=f.business.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const times=schedule(variants.length,f.ppw);
+
+  const stages=[['Intake','ok'],['Avatar',f.consent?'attention':'attention'],['Script','ok'],['Render','pending'],['Review','ok'],['Schedule','ok'],['Measure','pending']];
+  const rail=stages.map(([n,s])=>`<div class="node ${s}"><span class="bead"></span><div class="lbl">${n}</div></div>`).join('');
+
+  const vcards=variants.map(v=>`<div class="vcard"><div class="angle">${esc(v.angle)}</div><div class="hook">${esc(v.hook)}</div><ul>${v.lines.map(l=>`<li>${esc(l.text)}</li>`).join('')}</ul><div class="cta">${esc(v.cta)} · ${esc(f.handle)}</div></div>`).join('');
+
+  let posts=[];
+  variants.forEach((v,i)=>f.channels.forEach(ch=>posts.push({v:v.id,ch,t:times[i],link:utm(f.url,ch,v.id,slug)})));
+  const postRows=posts.map(p=>`<tr><td class="muted">${esc(p.v)}</td><td><span class="svc">${esc(p.ch)}</span></td><td>${fmtTime(p.t)}</td><td class="mono">${esc(p.link)}</td><td><span class="badge scheduled">scheduled</span></td></tr>`).join('');
+
+  const renders=variants.map(v=>`<tr><td class="mono">${slug}__${esc(v.id)}</td><td><span class="badge queued">queued (CI render)</span></td></tr>`).join('');
+
+  const avatarStatus = f.consent
+    ? `<span class="badge queued">queued for soul-id generation</span> — upload a photo + voice clip and the engine builds the persona.`
+    : `<span class="badge attention">blocked</span> — consent required before creating an AI avatar/voice.`;
+
+  document.getElementById('out').innerHTML=`
+    <div class="hero">
+      <h1>${esc(f.business)}</h1>
+      <span class="chip">Audience: <b>${esc(f.audience)}</b></span>
+      <span class="chip">Cadence: <b>${f.ppw}/wk</b></span>
+      <span class="chip">Channels: <b>${f.channels.join(', ')}</b></span>
+    </div>
+    <div class="rail">${rail}<div class="pulse"></div></div>
+
+    <div class="stage"><h3>Script — ${variants.length} starter variants <span class="editlink" id="regen">↻ regenerate</span></h3><div class="vcards">${vcards}</div>
+      <div class="note">Starter angles, branded to your business. Final copy is written by the LLM scripting stage from your full knowledge base.</div></div>
+
+    <div class="stage"><h3>Avatar / soul id</h3><div style="font-size:14px;color:var(--muted)">${avatarStatus}</div></div>
+
+    <div class="stage"><h3>Schedule + post — ${posts.length} posts across ${f.channels.length} channels</h3>
+      <table><thead><tr><th>Variant</th><th>Channel</th><th>When</th><th>UTM destination</th><th>Status</th></tr></thead><tbody>${postRows}</tbody></table>
+      <div class="note">Times spread across your weekly cadence; each link UTM-tagged so the scoreboard can attribute results. Posting goes to your own connected accounts.</div></div>
+
+    <div class="stage"><h3>Render &amp; measure</h3>
+      <table><thead><tr><th>Composition</th><th>Status</th></tr></thead><tbody>${renders}</tbody></table>
+      <div class="note">Render runs in CI; the scoreboard ranks variants by clicks + signups once posts are live.</div></div>
+  `;
+  document.getElementById('regen').onclick=run;
+  document.getElementById('out').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function loadSample(){
+  document.getElementById('business').value='Coastal Dental';
+  document.getElementById('offer').value='gentle family dentistry with same-week appointments';
+  document.getElementById('audience').value='local families who hate waiting rooms';
+  document.getElementById('problem').value='putting off the dentist for months';
+  document.getElementById('accent').value='#10b981';
+  document.getElementById('accent2').value='#6ee7b7';
+  document.getElementById('ppw').value='3';
+  document.getElementById('handle').value='@coastaldental';
+  document.getElementById('url').value='coastaldental.com';
+  document.getElementById('cta').value='Book this week';
+  [...document.querySelectorAll('#channels .chk')].forEach(c=>c.classList.toggle('on',['instagram','facebook','tiktok'].includes(c.dataset.v)));
+  run();
+}
+
+document.getElementById('run').onclick=run;
+document.getElementById('sample').onclick=loadSample;
+</script>
+</body>
+</html>
