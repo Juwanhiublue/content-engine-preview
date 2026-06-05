@@ -161,7 +161,7 @@
     </div>
 
     <!-- OUTPUT -->
-    <div id="out"><div class="empty">Fill in your business on the left and hit <b>Run the engine</b>. The plan generates here, branded to you.</div></div>
+    <div id="out"><div class="empty">Fill in your business, then hit <b>Run the engine</b>. On a phone, the plan appears just below the form.</div></div>
   </div>
 </div>
 
@@ -269,8 +269,21 @@ function run(){
       <table><thead><tr><th>Composition</th><th>Status</th></tr></thead><tbody>${renders}</tbody></table>
       <div class="note">Render runs in CI; the scoreboard ranks variants by clicks + signups once posts are live.</div></div>
   `;
-  document.getElementById('regen').onclick=run;
-  document.getElementById('out').scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById('regen').onclick=safeRun;
+  // Reliable scroll to the result (scrollIntoView is flaky in mobile webviews).
+  const out=document.getElementById('out');
+  const top=out.getBoundingClientRect().top+window.pageYOffset-12;
+  window.scrollTo({top,behavior:'smooth'});
+  out.style.outline='2px solid var(--accent)';out.style.borderRadius='16px';
+  setTimeout(()=>{out.style.outline='none';},1400);
+}
+
+// Wrap so a click ALWAYS produces something visible — success or a clear error.
+function safeRun(){
+  const out=document.getElementById('out');
+  out.innerHTML='<div class="empty">Generating your plan…</div>';
+  try{ run(); }
+  catch(e){ out.innerHTML='<div class="empty">Could not generate the plan: '+esc(e.message)+'. Please try again.</div>'; }
 }
 
 function loadSample(){
@@ -285,10 +298,10 @@ function loadSample(){
   document.getElementById('url').value='coastaldental.com';
   document.getElementById('cta').value='Book this week';
   [...document.querySelectorAll('#channels .chk')].forEach(c=>c.classList.toggle('on',['instagram','facebook','tiktok'].includes(c.dataset.v)));
-  run();
+  safeRun();
 }
 
-document.getElementById('run').onclick=run;
+document.getElementById('run').onclick=safeRun;
 document.getElementById('sample').onclick=loadSample;
 </script>
 </body>
