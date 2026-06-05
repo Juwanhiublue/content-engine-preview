@@ -1,8 +1,9 @@
 {
-  "generatedAt": "2026-06-05T18:11:58.032Z",
+  "generatedAt": "2026-06-05T19:28:44.990Z",
   "stages": [
     "intake",
     "avatar",
+    "research",
     "script",
     "render",
     "review",
@@ -42,6 +43,7 @@
       "stageStatus": {
         "intake": "ok",
         "avatar": "ok",
+        "research": "ok",
         "script": "ok",
         "render": "pending",
         "review": "ok",
@@ -70,6 +72,54 @@
         "status": "ready",
         "clip": "/workspace/jay/projects/content-engine/video/public/ralph-hero.mp4",
         "voice": "/workspace/jay/projects/content-engine/video/public/ralph-vo.mp3"
+      },
+      "research": {
+        "tenantId": "hiublue",
+        "competitors": [
+          "top hiublue accounts",
+          "Agencies and sales teams viral reels"
+        ],
+        "topPerformers": [],
+        "patterns": [
+          {
+            "pattern": "Hook lands in the first 2 seconds (problem, stat, or bold claim)",
+            "evidence": 9,
+            "apply": "Open on the sharpest line; no logo intro before the hook."
+          },
+          {
+            "pattern": "One idea per video",
+            "evidence": 8,
+            "apply": "Each variant carries a single angle; don't stack messages."
+          },
+          {
+            "pattern": "Full-bleed talking head + bold burned-in captions",
+            "evidence": 8,
+            "apply": "Use the karaoke caption template; assume sound-off viewing."
+          },
+          {
+            "pattern": "7-15s pacing, fast cuts",
+            "evidence": 7,
+            "apply": "Keep line durations ~2-3s; trim dead air."
+          },
+          {
+            "pattern": "Pattern interrupt or question in the opener",
+            "evidence": 6,
+            "apply": "Lead a variant with a direct question to the viewer."
+          },
+          {
+            "pattern": "Concrete proof over adjectives (numbers, named results)",
+            "evidence": 6,
+            "apply": "Prefer 'deadlifted bodyweight in 12 weeks' over 'amazing results'."
+          }
+        ],
+        "recommendedAngles": [
+          "Problem the audience feels in the first line",
+          "Outcome/transformation, shown not claimed",
+          "Myth-bust or objection the niche keeps repeating",
+          "Proof: a specific result with a number"
+        ],
+        "source": "heuristic-baseline",
+        "note": "Baseline patterns (no YouTube/Meta keys yet). Add YOUTUBE_API_KEY + META_AD_LIBRARY_TOKEN to .env for live competitor scraping per niche."
       },
       "plan": {
         "tenantId": "hiublue",
@@ -210,6 +260,12 @@
             "handle": "@hiublue",
             "url": "hiublue.com"
           }
+        ],
+        "informedBy": [
+          "Hook lands in the first 2 seconds (problem, stat, or bold claim)",
+          "One idea per video",
+          "Full-bleed talking head + bold burned-in captions",
+          "7-15s pacing, fast cuts"
         ]
       },
       "render": {
@@ -268,84 +324,84 @@
           {
             "variantId": "v1-shift",
             "channel": "instagram",
-            "scheduledAt": "2026-06-06T18:11:58.031Z",
+            "scheduledAt": "2026-06-06T19:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=instagram&utm_medium=social&utm_campaign=v1-shift&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v1-shift",
             "channel": "youtube",
-            "scheduledAt": "2026-06-06T18:11:58.031Z",
+            "scheduledAt": "2026-06-06T19:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=youtube&utm_medium=social&utm_campaign=v1-shift&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v1-shift",
             "channel": "facebook",
-            "scheduledAt": "2026-06-06T18:11:58.031Z",
+            "scheduledAt": "2026-06-06T19:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=facebook&utm_medium=social&utm_campaign=v1-shift&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v2-overwhelm",
             "channel": "instagram",
-            "scheduledAt": "2026-06-08T12:11:58.031Z",
+            "scheduledAt": "2026-06-08T13:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=instagram&utm_medium=social&utm_campaign=v2-overwhelm&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v2-overwhelm",
             "channel": "youtube",
-            "scheduledAt": "2026-06-08T12:11:58.031Z",
+            "scheduledAt": "2026-06-08T13:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=youtube&utm_medium=social&utm_campaign=v2-overwhelm&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v2-overwhelm",
             "channel": "facebook",
-            "scheduledAt": "2026-06-08T12:11:58.031Z",
+            "scheduledAt": "2026-06-08T13:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=facebook&utm_medium=social&utm_campaign=v2-overwhelm&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v3-always-on",
             "channel": "instagram",
-            "scheduledAt": "2026-06-10T06:11:58.031Z",
+            "scheduledAt": "2026-06-10T07:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=instagram&utm_medium=social&utm_campaign=v3-always-on&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v3-always-on",
             "channel": "youtube",
-            "scheduledAt": "2026-06-10T06:11:58.031Z",
+            "scheduledAt": "2026-06-10T07:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=youtube&utm_medium=social&utm_campaign=v3-always-on&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v3-always-on",
             "channel": "facebook",
-            "scheduledAt": "2026-06-10T06:11:58.031Z",
+            "scheduledAt": "2026-06-10T07:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=facebook&utm_medium=social&utm_campaign=v3-always-on&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v4-headcount",
             "channel": "instagram",
-            "scheduledAt": "2026-06-12T00:11:58.031Z",
+            "scheduledAt": "2026-06-12T01:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=instagram&utm_medium=social&utm_campaign=v4-headcount&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v4-headcount",
             "channel": "youtube",
-            "scheduledAt": "2026-06-12T00:11:58.031Z",
+            "scheduledAt": "2026-06-12T01:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=youtube&utm_medium=social&utm_campaign=v4-headcount&utm_content=hiublue",
             "status": "dry-run"
           },
           {
             "variantId": "v4-headcount",
             "channel": "facebook",
-            "scheduledAt": "2026-06-12T00:11:58.031Z",
+            "scheduledAt": "2026-06-12T01:28:44.989Z",
             "url": "https://hiublue.com/?utm_source=facebook&utm_medium=social&utm_campaign=v4-headcount&utm_content=hiublue",
             "status": "dry-run"
           }
@@ -449,6 +505,7 @@
       "stageStatus": {
         "intake": "ok",
         "avatar": "attention",
+        "research": "ok",
         "script": "ok",
         "render": "pending",
         "review": "ok",
@@ -476,6 +533,54 @@
         "displayName": "Coach Maya · AI persona",
         "status": "needs-assets",
         "note": "No render-ready clip for reyes-strength. Generate via Lipsync Studio from talent.avatarRef + talent.voiceRef (see memory higgsfield-ralph-pipeline), then place at video/public/reyes-strength-hero.mp4."
+      },
+      "research": {
+        "tenantId": "reyes-strength",
+        "competitors": [
+          "top reyes strength accounts",
+          "Busy professionals who want to get strong without living in the gym viral reels"
+        ],
+        "topPerformers": [],
+        "patterns": [
+          {
+            "pattern": "Hook lands in the first 2 seconds (problem, stat, or bold claim)",
+            "evidence": 9,
+            "apply": "Open on the sharpest line; no logo intro before the hook."
+          },
+          {
+            "pattern": "One idea per video",
+            "evidence": 8,
+            "apply": "Each variant carries a single angle; don't stack messages."
+          },
+          {
+            "pattern": "Full-bleed talking head + bold burned-in captions",
+            "evidence": 8,
+            "apply": "Use the karaoke caption template; assume sound-off viewing."
+          },
+          {
+            "pattern": "7-15s pacing, fast cuts",
+            "evidence": 7,
+            "apply": "Keep line durations ~2-3s; trim dead air."
+          },
+          {
+            "pattern": "Pattern interrupt or question in the opener",
+            "evidence": 6,
+            "apply": "Lead a variant with a direct question to the viewer."
+          },
+          {
+            "pattern": "Concrete proof over adjectives (numbers, named results)",
+            "evidence": 6,
+            "apply": "Prefer 'deadlifted bodyweight in 12 weeks' over 'amazing results'."
+          }
+        ],
+        "recommendedAngles": [
+          "Problem the audience feels in the first line",
+          "Outcome/transformation, shown not claimed",
+          "Myth-bust or objection the niche keeps repeating",
+          "Proof: a specific result with a number"
+        ],
+        "source": "heuristic-baseline",
+        "note": "Baseline patterns (no YouTube/Meta keys yet). Add YOUTUBE_API_KEY + META_AD_LIBRARY_TOKEN to .env for live competitor scraping per niche."
       },
       "plan": {
         "tenantId": "reyes-strength",
@@ -584,6 +689,12 @@
             "handle": "@reyesstrength",
             "url": "reyesstrength.com"
           }
+        ],
+        "informedBy": [
+          "Hook lands in the first 2 seconds (problem, stat, or bold claim)",
+          "One idea per video",
+          "Full-bleed talking head + bold burned-in captions",
+          "7-15s pacing, fast cuts"
         ]
       },
       "render": {
@@ -642,84 +753,84 @@
           {
             "variantId": "rs1-no-time",
             "channel": "instagram",
-            "scheduledAt": "2026-06-06T18:11:58.032Z",
+            "scheduledAt": "2026-06-06T19:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=instagram&utm_medium=social&utm_campaign=rs1-no-time&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs1-no-time",
             "channel": "tiktok",
-            "scheduledAt": "2026-06-06T18:11:58.032Z",
+            "scheduledAt": "2026-06-06T19:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=tiktok&utm_medium=social&utm_campaign=rs1-no-time&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs1-no-time",
             "channel": "youtube",
-            "scheduledAt": "2026-06-06T18:11:58.032Z",
+            "scheduledAt": "2026-06-06T19:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=youtube&utm_medium=social&utm_campaign=rs1-no-time&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs2-form-first",
             "channel": "instagram",
-            "scheduledAt": "2026-06-09T02:11:58.032Z",
+            "scheduledAt": "2026-06-09T03:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=instagram&utm_medium=social&utm_campaign=rs2-form-first&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs2-form-first",
             "channel": "tiktok",
-            "scheduledAt": "2026-06-09T02:11:58.032Z",
+            "scheduledAt": "2026-06-09T03:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=tiktok&utm_medium=social&utm_campaign=rs2-form-first&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs2-form-first",
             "channel": "youtube",
-            "scheduledAt": "2026-06-09T02:11:58.032Z",
+            "scheduledAt": "2026-06-09T03:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=youtube&utm_medium=social&utm_campaign=rs2-form-first&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs3-busy-pro",
             "channel": "instagram",
-            "scheduledAt": "2026-06-11T10:11:58.032Z",
+            "scheduledAt": "2026-06-11T11:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=instagram&utm_medium=social&utm_campaign=rs3-busy-pro&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs3-busy-pro",
             "channel": "tiktok",
-            "scheduledAt": "2026-06-11T10:11:58.032Z",
+            "scheduledAt": "2026-06-11T11:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=tiktok&utm_medium=social&utm_campaign=rs3-busy-pro&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs3-busy-pro",
             "channel": "youtube",
-            "scheduledAt": "2026-06-11T10:11:58.032Z",
+            "scheduledAt": "2026-06-11T11:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=youtube&utm_medium=social&utm_campaign=rs3-busy-pro&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs4-proof",
             "channel": "instagram",
-            "scheduledAt": "2026-06-13T18:11:58.032Z",
+            "scheduledAt": "2026-06-13T19:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=instagram&utm_medium=social&utm_campaign=rs4-proof&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs4-proof",
             "channel": "tiktok",
-            "scheduledAt": "2026-06-13T18:11:58.032Z",
+            "scheduledAt": "2026-06-13T19:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=tiktok&utm_medium=social&utm_campaign=rs4-proof&utm_content=reyes-strength",
             "status": "dry-run"
           },
           {
             "variantId": "rs4-proof",
             "channel": "youtube",
-            "scheduledAt": "2026-06-13T18:11:58.032Z",
+            "scheduledAt": "2026-06-13T19:28:44.990Z",
             "url": "https://reyesstrength.com/?utm_source=youtube&utm_medium=social&utm_campaign=rs4-proof&utm_content=reyes-strength",
             "status": "dry-run"
           }

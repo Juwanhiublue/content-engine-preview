@@ -136,7 +136,7 @@ function render(){
   renderSwitch();
   document.getElementById('gen').textContent='snapshot '+fmtTime(DATA.generatedAt);
 
-  const stageNames={intake:'Intake',avatar:'Avatar',script:'Script',render:'Render',review:'Review',post:'Schedule',measure:'Measure'};
+  const stageNames={intake:'Intake',avatar:'Avatar',research:'Research',script:'Script',render:'Render',review:'Review',post:'Schedule',measure:'Measure'};
   const rail = DATA.stages.map((s,i)=>{
     const st=t.stageStatus[s]||'pending';
     return `<div class="node ${st}" data-i="${i}"><span class="bead"></span><div class="lbl">${stageNames[s]}</div></div>`;
@@ -178,7 +178,7 @@ function render(){
     <span class="chip">Consent: <b>${t.talent.consent?'yes':'no'}</b></span>
   </div>
 
-  <div class="rail">${rail}<div class="pulse"></div></div>
+  <div class="rail" style="grid-template-columns:repeat(${DATA.stages.length},1fr)">${rail}<div class="pulse"></div></div>
 
   <div class="stage" id="s-intake">
     <h2>1 · Intake ${stageStatusBadge(t.stageStatus.intake)}</h2>
@@ -193,29 +193,39 @@ function render(){
     ${t.avatar.note?`<div class="note">${esc(t.avatar.note)}</div>`:''}
   </div>
 
+  <div class="stage" id="s-research">
+    <h2>3 · Competitive research ${stageStatusBadge(t.stageStatus.research)}</h2>
+    <div class="kv" style="margin-bottom:10px">Source: <b>${t.research.source==='live'?'live (scraped)':'baseline'}</b> · ${t.research.patterns.length} winning patterns the scripts replicate.</div>
+    <table><thead><tr><th>Winning pattern</th><th>Seen in</th><th>How we apply it</th></tr></thead><tbody>
+    ${t.research.patterns.map(p=>`<tr><td>${esc(p.pattern)}</td><td class="muted">${p.evidence}/10</td><td class="muted">${esc(p.apply)}</td></tr>`).join('')}
+    </tbody></table>
+    ${t.research.note?`<div class="note">${esc(t.research.note)}</div>`:''}
+  </div>
+
   <div class="stage" id="s-script">
-    <h2>3 · Script — ${t.plan.variants.length} variants ${stageStatusBadge(t.stageStatus.script)}</h2>
+    <h2>4 · Script — ${t.plan.variants.length} variants ${stageStatusBadge(t.stageStatus.script)}</h2>
+    ${t.plan.informedBy&&t.plan.informedBy.length?`<div class="kv" style="margin-bottom:10px">Informed by research: <b>${esc(t.plan.informedBy[0])}</b></div>`:''}
     <div class="vcards">${vcards}</div>
   </div>
 
   <div class="stage" id="s-render">
-    <h2>4 · Render — ${t.render.videos.length} compositions ${stageStatusBadge(t.stageStatus.render)}</h2>
+    <h2>5 · Render — ${t.render.videos.length} compositions ${stageStatusBadge(t.stageStatus.render)}</h2>
     <table><thead><tr><th>Composition</th><th>Status</th></tr></thead><tbody>${renders}</tbody></table>
     <div class="note">Renders run in CI (headless Chrome). Composition id = tenant + variant.</div>
   </div>
 
   <div class="stage" id="s-review">
-    <h2>5 · Review gate ${stageStatusBadge(t.stageStatus.review)}</h2>
+    <h2>6 · Review gate ${stageStatusBadge(t.stageStatus.review)}</h2>
     <div class="kv">${t.review.items.filter(i=>i.status==='approved').length} of ${t.review.items.length} approved. Live runs require a human greenlight before anything posts.</div>
   </div>
 
   <div class="stage" id="s-post">
-    <h2>6 · Schedule + post (Buffer) — ${t.post.posts.length} posts ${stageStatusBadge(t.stageStatus.post)}</h2>
+    <h2>7 · Schedule + post (Buffer) — ${t.post.posts.length} posts ${stageStatusBadge(t.stageStatus.post)}</h2>
     <table><thead><tr><th>Variant</th><th>Channel</th><th>When</th><th>UTM destination</th><th>Status</th></tr></thead><tbody>${posts}</tbody></table>
   </div>
 
   <div class="stage" id="s-measure">
-    <h2>7 · Measure — scoreboard ${stageStatusBadge(t.stageStatus.measure)}</h2>
+    <h2>8 · Measure — scoreboard ${stageStatusBadge(t.stageStatus.measure)}</h2>
     <table><thead><tr><th>Variant</th><th>Channel</th><th>Score</th></tr></thead><tbody>${score}</tbody></table>
     <div class="note">Ranks by clicks + signups (conversion-weighted), not views. Populates once posts are live.</div>
   </div>`;
