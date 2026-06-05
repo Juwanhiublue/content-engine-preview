@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Content Engine · Console</title>
+<style>
+  :root{
+    --ink:#08090b; --ink2:#131418; --ink3:#1c1d22;
+    --line:rgba(255,255,255,.10); --white:#f7f8f8; --muted:#7a828b;
+    --accent:#3d5df8; --accent2:#b4a4ff;
+    --ok:#3ddc84; --warn:#f5b54a; --pending:#5b6472;
+    --grad:linear-gradient(120deg,var(--accent),var(--accent2));
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ink);color:var(--white);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent2);text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 22px 80px}
+
+  /* top */
+  .top{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;border-bottom:1px solid var(--line);padding-bottom:20px}
+  .brandmark{font-weight:800;font-size:26px;letter-spacing:-.02em}
+  .brandmark .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);font-size:14px;margin-top:4px}
+  .gen{color:var(--muted);font-size:12px}
+  .switch{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .tpill{cursor:pointer;border:1px solid var(--line);background:var(--ink2);color:var(--muted);
+    border-radius:999px;padding:9px 16px;font-size:14px;font-weight:600;transition:.15s}
+  .tpill .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle}
+  .tpill.active{color:var(--white);border-color:var(--accent);background:rgba(61,93,248,.12)}
+
+  /* tenant hero */
+  .hero{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:26px 0 8px}
+  .hero h1{font-size:30px;letter-spacing:-.02em}
+  .chip{font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--ink2)}
+  .chip b{color:var(--white);font-weight:600}
+
+  /* flow rail */
+  .rail{position:relative;display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin:30px 0 10px}
+  .node{position:relative;text-align:center;cursor:pointer;padding-top:30px}
+  .node::before{content:"";position:absolute;top:11px;left:50%;width:100%;height:2px;background:var(--line)}
+  .node:last-child::before{display:none}
+  .node .bead{position:absolute;top:4px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;
+    background:var(--pending);border:3px solid var(--ink);z-index:2;transition:.2s}
+  .node.ok .bead{background:var(--ok);box-shadow:0 0 14px var(--ok)}
+  .node.attention .bead{background:var(--warn);box-shadow:0 0 14px var(--warn)}
+  .node .lbl{font-size:13px;color:var(--muted);font-weight:600}
+  .node.sel .lbl{color:var(--white)}
+  .node.sel .bead{outline:2px solid var(--accent);outline-offset:2px}
+  /* flowing pulse */
+  .pulse{position:absolute;top:8px;left:0;width:9px;height:9px;border-radius:50%;background:var(--accent2);
+    box-shadow:0 0 12px var(--accent2);animation:flow 4.5s linear infinite;z-index:3}
+  @keyframes flow{0%{left:0;opacity:0}6%{opacity:1}94%{opacity:1}100%{left:calc(100% - 9px);opacity:0}}
+
+  /* stage cards */
+  .stage{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:16px}
+  .stage h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent2);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .stage h2 .st{font-size:11px;letter-spacing:.04em;text-transform:none;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .stage h2 .st.ok{color:var(--ok);border-color:rgba(61,220,132,.4)}
+  .stage h2 .st.attention{color:var(--warn);border-color:rgba(245,181,74,.4)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .kv{font-size:14px;color:var(--muted)}
+  .kv b{color:var(--white);font-weight:600}
+
+  /* variant cards */
+  .vcards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .vcard{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--ink3)}
+  .vcard .angle{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .vcard .hook{font-size:18px;font-weight:800;letter-spacing:-.01em;margin:6px 0 10px;white-space:pre-line}
+  .vcard ul{list-style:none;margin:0 0 10px}
+  .vcard li{font-size:13.5px;color:var(--muted);padding:3px 0;padding-left:16px;position:relative}
+  .vcard li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .vcard .cta{font-size:13.5px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--white)}
+  td.muted{color:var(--muted)}
+  .badge{font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .badge.dry-run{color:var(--accent2);border-color:rgba(180,164,255,.4)}
+  .badge.approved,.badge.ready,.badge.ok{color:var(--ok);border-color:rgba(61,220,132,.4)}
+  .badge.pending,.badge.needs-assets{color:var(--warn);border-color:rgba(245,181,74,.4)}
+  .svc{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;background:rgba(61,93,248,.14);color:var(--accent2);text-transform:capitalize}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted);word-break:break-all}
+  .note{font-size:13px;color:var(--warn);margin-top:8px}
+  .foot{color:var(--muted);font-size:12.5px;margin-top:30px;border-top:1px solid var(--line);padding-top:16px}
+  @media(max-width:760px){.grid2,.vcards{grid-template-columns:1fr}.rail{grid-template-columns:repeat(7,1fr)}.node .lbl{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="brandmark"><span class="g">Content Engine</span> · Console</div>
+      <div class="sub">One pipeline. Any business. Watch a tenant flow from intake to scheduled posts.</div>
+      <div class="switch" id="switch"></div>
+    </div>
+    <div class="gen" id="gen"></div>
+  </div>
+
+  <div id="view"></div>
+
+  <div class="foot" id="foot"></div>
+</div>
+
+<script>
+const STATUS_LABEL = { ok:"ready", attention:"needs input", pending:"awaiting" };
+
+function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstElementChild; }
+function esc(s){ return String(s).replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function fmtTime(iso){ try{ const d=new Date(iso); return d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});}catch(e){return iso;} }
+
+let DATA=null, current=0;
+
+function applyAccent(t){
+  document.documentElement.style.setProperty('--accent', t.brand.accent);
+  document.documentElement.style.setProperty('--accent2', t.brand.accent2);
+}
+
+function renderSwitch(){
+  const s=document.getElementById('switch'); s.innerHTML='';
+  DATA.tenants.forEach((t,i)=>{
+    const p=el(`<button class="tpill ${i===current?'active':''}"><span class="dot" style="background:${t.brand.accent}"></span>${esc(t.business)}</button>`);
+    p.onclick=()=>{ current=i; render(); };
+    s.appendChild(p);
+  });
+}
+
+function stageStatusBadge(s){ const cls=s==='ok'?'ok':s==='attention'?'attention':'pending'; return `<span class="st ${cls}">${STATUS_LABEL[s]||s}</span>`; }
+
+function render(){
+  const t=DATA.tenants[current];
+  applyAccent(t);
+  renderSwitch();
+  document.getElementById('gen').textContent='snapshot '+fmtTime(DATA.generatedAt);
+
+  const stageNames={intake:'Intake',avatar:'Avatar',script:'Script',render:'Render',review:'Review',post:'Schedule',measure:'Measure'};
+  const rail = DATA.stages.map((s,i)=>{
+    const st=t.stageStatus[s]||'pending';
+    return `<div class="node ${st}" data-i="${i}"><span class="bead"></span><div class="lbl">${stageNames[s]}</div></div>`;
+  }).join('');
+
+  // variant cards
+  const vcards = t.plan.variants.map(v=>`
+    <div class="vcard">
+      <div class="angle">${esc(v.angle)}</div>
+      <div class="hook">${esc(v.hook)}</div>
+      <ul>${v.lines.map(l=>`<li>${esc(l.text)}</li>`).join('')}</ul>
+      <div class="cta">${esc(v.cta)}</div>
+    </div>`).join('');
+
+  // schedule table
+  const posts = t.post.posts.map(p=>`
+    <tr>
+      <td class="muted">${esc(p.variantId)}</td>
+      <td><span class="svc">${esc(p.channel)}</span></td>
+      <td>${fmtTime(p.scheduledAt)}</td>
+      <td class="mono">${esc(p.url.replace('https://',''))}</td>
+      <td><span class="badge ${p.status}">${esc(p.status)}</span></td>
+    </tr>`).join('');
+
+  // render rows
+  const renders = t.render.videos.map(v=>`
+    <tr><td class="mono">${esc(v.compositionId)}</td><td><span class="badge ${v.status}">${esc(v.status)}</span></td></tr>`).join('');
+
+  // scoreboard
+  const score = t.metrics.rows.slice(0,8).map(r=>`
+    <tr><td class="muted">${esc(r.variantId)}</td><td><span class="svc">${esc(r.channel)}</span></td><td>${r.score??0}</td></tr>`).join('');
+
+  const html = `
+  <div class="hero">
+    <h1>${esc(t.business)}</h1>
+    <span class="chip">Audience: <b>${esc(t.audience)}</b></span>
+    <span class="chip">Cadence: <b>${t.postsPerWeek}/wk</b></span>
+    <span class="chip">Channels: <b>${t.channels.join(', ')}</b></span>
+    <span class="chip">Consent: <b>${t.talent.consent?'yes':'no'}</b></span>
+  </div>
+
+  <div class="rail">${rail}<div class="pulse"></div></div>
+
+  <div class="stage" id="s-intake">
+    <h2>1 · Intake ${stageStatusBadge(t.stageStatus.intake)}</h2>
+    <div class="grid2">
+      ${t.intake.knowledge.map(k=>`<div class="kv">${esc(k)}</div>`).join('')}
+    </div>
+  </div>
+
+  <div class="stage" id="s-avatar">
+    <h2>2 · Avatar / soul id ${stageStatusBadge(t.stageStatus.avatar)}</h2>
+    <div class="kv"><b>${esc(t.avatar.displayName)}</b> — status <span class="badge ${t.avatar.status}">${esc(t.avatar.status)}</span></div>
+    ${t.avatar.note?`<div class="note">${esc(t.avatar.note)}</div>`:''}
+  </div>
+
+  <div class="stage" id="s-script">
+    <h2>3 · Script — ${t.plan.variants.length} variants ${stageStatusBadge(t.stageStatus.script)}</h2>
+    <div class="vcards">${vcards}</div>
+  </div>
+
+  <div class="stage" id="s-render">
+    <h2>4 · Render — ${t.render.videos.length} compositions ${stageStatusBadge(t.stageStatus.render)}</h2>
+    <table><thead><tr><th>Composition</th><th>Status</th></tr></thead><tbody>${renders}</tbody></table>
+    <div class="note">Renders run in CI (headless Chrome). Composition id = tenant + variant.</div>
+  </div>
+
+  <div class="stage" id="s-review">
+    <h2>5 · Review gate ${stageStatusBadge(t.stageStatus.review)}</h2>
+    <div class="kv">${t.review.items.filter(i=>i.status==='approved').length} of ${t.review.items.length} approved. Live runs require a human greenlight before anything posts.</div>
+  </div>
+
+  <div class="stage" id="s-post">
+    <h2>6 · Schedule + post (Buffer) — ${t.post.posts.length} posts ${stageStatusBadge(t.stageStatus.post)}</h2>
+    <table><thead><tr><th>Variant</th><th>Channel</th><th>When</th><th>UTM destination</th><th>Status</th></tr></thead><tbody>${posts}</tbody></table>
+  </div>
+
+  <div class="stage" id="s-measure">
+    <h2>7 · Measure — scoreboard ${stageStatusBadge(t.stageStatus.measure)}</h2>
+    <table><thead><tr><th>Variant</th><th>Channel</th><th>Score</th></tr></thead><tbody>${score}</tbody></table>
+    <div class="note">Ranks by clicks + signups (conversion-weighted), not views. Populates once posts are live.</div>
+  </div>`;
+
+  document.getElementById('view').innerHTML=html;
+
+  // rail click -> scroll to stage
+  document.querySelectorAll('.node').forEach(n=>{
+    n.onclick=()=>{
+      document.querySelectorAll('.node').forEach(x=>x.classList.remove('sel'));
+      n.classList.add('sel');
+      const id='s-'+DATA.stages[+n.dataset.i];
+      document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+  });
+
+  document.getElementById('foot').innerHTML =
+    `hiublue Content Engine · tenant zero proves a client product. Switch tenants above — same engine, different business, zero code changes. Snapshot is a real dry-run of the pipeline.`;
+}
+
+fetch('./engine-state.json',{cache:'no-store'})
+  .then(r=>r.json())
+  .then(d=>{ DATA=d; render(); })
+  .catch(e=>{ document.getElementById('view').innerHTML='<div class="stage"><h2>Could not load engine-state.json</h2><div class="kv">'+esc(e.message)+'</div></div>'; });
+</script>
+</body>
+</html>

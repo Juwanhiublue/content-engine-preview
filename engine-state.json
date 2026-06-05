@@ -1,0 +1,795 @@
+{
+  "generatedAt": "2026-06-05T18:11:58.032Z",
+  "stages": [
+    "intake",
+    "avatar",
+    "script",
+    "render",
+    "review",
+    "post",
+    "measure"
+  ],
+  "tenants": [
+    {
+      "id": "hiublue",
+      "business": "hiublue",
+      "audience": "Agencies and sales teams",
+      "ctaLabel": "Join the waitlist",
+      "brand": {
+        "ink": "#08090b",
+        "ink2": "#131418",
+        "ink3": "#1c1d22",
+        "accent": "#3d5df8",
+        "accent2": "#b4a4ff",
+        "white": "#f7f8f8",
+        "muted": "#7a828b",
+        "line": "rgba(255,255,255,0.10)",
+        "grad": "linear-gradient(120deg, #3d5df8, #b4a4ff)",
+        "font": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Inter, Roboto, Helvetica, Arial, sans-serif"
+      },
+      "talent": {
+        "displayName": "Ralph · AI persona",
+        "consent": true
+      },
+      "channels": [
+        "instagram",
+        "youtube",
+        "facebook"
+      ],
+      "handle": "@hiublue",
+      "url": "hiublue.com",
+      "postsPerWeek": 4,
+      "stageStatus": {
+        "intake": "ok",
+        "avatar": "ok",
+        "script": "ok",
+        "render": "pending",
+        "review": "ok",
+        "post": "ok",
+        "measure": "pending"
+      },
+      "intake": {
+        "tenantId": "hiublue",
+        "business": "hiublue",
+        "audience": "Agencies and sales teams",
+        "knowledge": [
+          "Business: hiublue",
+          "Audience: Agencies and sales teams",
+          "Cadence: 4 posts/week",
+          "Channels: instagram, youtube, facebook"
+        ],
+        "likeness": {
+          "avatarRef": "assets/ralph/ralph-character-reference.png",
+          "voiceRef": "assets/ralph/ralph-cloned-voice.mp3",
+          "consent": true
+        }
+      },
+      "avatar": {
+        "tenantId": "hiublue",
+        "displayName": "Ralph · AI persona",
+        "status": "ready",
+        "clip": "/workspace/jay/projects/content-engine/video/public/ralph-hero.mp4",
+        "voice": "/workspace/jay/projects/content-engine/video/public/ralph-vo.mp3"
+      },
+      "plan": {
+        "tenantId": "hiublue",
+        "variants": [
+          {
+            "id": "v1-shift",
+            "angle": "The shift: operate tools -> manage a team",
+            "hook": "Stop operating tools.\nStart managing a team.",
+            "lines": [
+              {
+                "text": "Every outbound business runs the same grind.",
+                "seconds": 2.4
+              },
+              {
+                "text": "Find people. Message them. Chase them. Repeat.",
+                "seconds": 2.8
+              },
+              {
+                "text": "hiublue replaces the chaos with a workforce.",
+                "seconds": 2.6
+              },
+              {
+                "text": "You hire AI workers and give them a name.",
+                "seconds": 2.6
+              },
+              {
+                "text": "They reach out, reply, and book the meeting.",
+                "seconds": 2.6
+              },
+              {
+                "text": "Every channel. In your voice. While you sleep.",
+                "seconds": 2.6
+              }
+            ],
+            "cta": "Hire AI employees that actually do the work.",
+            "handle": "@hiublue",
+            "url": "hiublue.com"
+          },
+          {
+            "id": "v2-overwhelm",
+            "angle": "Pain to relief: drowning in follow-ups",
+            "hook": "You didn't start a business\nto chase follow-ups.",
+            "lines": [
+              {
+                "text": "Leads pile up. Replies slip. The day disappears.",
+                "seconds": 2.8
+              },
+              {
+                "text": "What if a teammate just handled it?",
+                "seconds": 2.4
+              },
+              {
+                "text": "hiublue workers reach out and reply for you.",
+                "seconds": 2.6
+              },
+              {
+                "text": "Across email, LinkedIn, SMS, and DMs.",
+                "seconds": 2.4
+              },
+              {
+                "text": "They book the call into your calendar.",
+                "seconds": 2.4
+              },
+              {
+                "text": "You show up. They did the rest.",
+                "seconds": 2.4
+              }
+            ],
+            "cta": "Hire AI employees that actually do the work.",
+            "handle": "@hiublue",
+            "url": "hiublue.com"
+          },
+          {
+            "id": "v3-always-on",
+            "angle": "Always-on: answer hot leads in seconds, 24/7",
+            "hook": "Your best hire\nworks while you sleep.",
+            "lines": [
+              {
+                "text": "Leads message at midnight.",
+                "seconds": 2
+              },
+              {
+                "text": "Most teams answer at nine. The lead is gone.",
+                "seconds": 2.8
+              },
+              {
+                "text": "A hiublue worker replies in seconds, in your voice.",
+                "seconds": 2.8
+              },
+              {
+                "text": "On every channel, around the clock.",
+                "seconds": 2.4
+              },
+              {
+                "text": "No days off. No dropped follow-ups.",
+                "seconds": 2.4
+              },
+              {
+                "text": "Just booked meetings waiting in the morning.",
+                "seconds": 2.6
+              }
+            ],
+            "cta": "Hire AI employees that actually do the work.",
+            "handle": "@hiublue",
+            "url": "hiublue.com"
+          },
+          {
+            "id": "v4-headcount",
+            "angle": "Outcome: a full team without the headcount",
+            "hook": "The team you always wanted.\nWithout the headcount.",
+            "lines": [
+              {
+                "text": "No payroll. No onboarding. No turnover.",
+                "seconds": 2.6
+              },
+              {
+                "text": "You hire AI workers and give them a name.",
+                "seconds": 2.6
+              },
+              {
+                "text": "They run your outreach on every channel.",
+                "seconds": 2.4
+              },
+              {
+                "text": "They remember every customer and every deal.",
+                "seconds": 2.6
+              },
+              {
+                "text": "And they only get better over time.",
+                "seconds": 2.4
+              },
+              {
+                "text": "Your business, fully staffed by morning.",
+                "seconds": 2.6
+              }
+            ],
+            "cta": "Hire AI employees that actually do the work.",
+            "handle": "@hiublue",
+            "url": "hiublue.com"
+          }
+        ]
+      },
+      "render": {
+        "tenantId": "hiublue",
+        "videos": [
+          {
+            "variantId": "v1-shift",
+            "compositionId": "hiublue__v1-shift",
+            "status": "pending",
+            "note": "dry-run"
+          },
+          {
+            "variantId": "v2-overwhelm",
+            "compositionId": "hiublue__v2-overwhelm",
+            "status": "pending",
+            "note": "dry-run"
+          },
+          {
+            "variantId": "v3-always-on",
+            "compositionId": "hiublue__v3-always-on",
+            "status": "pending",
+            "note": "dry-run"
+          },
+          {
+            "variantId": "v4-headcount",
+            "compositionId": "hiublue__v4-headcount",
+            "status": "pending",
+            "note": "dry-run"
+          }
+        ]
+      },
+      "review": {
+        "tenantId": "hiublue",
+        "items": [
+          {
+            "variantId": "v1-shift",
+            "status": "approved"
+          },
+          {
+            "variantId": "v2-overwhelm",
+            "status": "approved"
+          },
+          {
+            "variantId": "v3-always-on",
+            "status": "approved"
+          },
+          {
+            "variantId": "v4-headcount",
+            "status": "approved"
+          }
+        ]
+      },
+      "post": {
+        "tenantId": "hiublue",
+        "posts": [
+          {
+            "variantId": "v1-shift",
+            "channel": "instagram",
+            "scheduledAt": "2026-06-06T18:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=instagram&utm_medium=social&utm_campaign=v1-shift&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v1-shift",
+            "channel": "youtube",
+            "scheduledAt": "2026-06-06T18:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=youtube&utm_medium=social&utm_campaign=v1-shift&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v1-shift",
+            "channel": "facebook",
+            "scheduledAt": "2026-06-06T18:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=facebook&utm_medium=social&utm_campaign=v1-shift&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v2-overwhelm",
+            "channel": "instagram",
+            "scheduledAt": "2026-06-08T12:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=instagram&utm_medium=social&utm_campaign=v2-overwhelm&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v2-overwhelm",
+            "channel": "youtube",
+            "scheduledAt": "2026-06-08T12:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=youtube&utm_medium=social&utm_campaign=v2-overwhelm&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v2-overwhelm",
+            "channel": "facebook",
+            "scheduledAt": "2026-06-08T12:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=facebook&utm_medium=social&utm_campaign=v2-overwhelm&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v3-always-on",
+            "channel": "instagram",
+            "scheduledAt": "2026-06-10T06:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=instagram&utm_medium=social&utm_campaign=v3-always-on&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v3-always-on",
+            "channel": "youtube",
+            "scheduledAt": "2026-06-10T06:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=youtube&utm_medium=social&utm_campaign=v3-always-on&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v3-always-on",
+            "channel": "facebook",
+            "scheduledAt": "2026-06-10T06:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=facebook&utm_medium=social&utm_campaign=v3-always-on&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v4-headcount",
+            "channel": "instagram",
+            "scheduledAt": "2026-06-12T00:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=instagram&utm_medium=social&utm_campaign=v4-headcount&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v4-headcount",
+            "channel": "youtube",
+            "scheduledAt": "2026-06-12T00:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=youtube&utm_medium=social&utm_campaign=v4-headcount&utm_content=hiublue",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "v4-headcount",
+            "channel": "facebook",
+            "scheduledAt": "2026-06-12T00:11:58.031Z",
+            "url": "https://hiublue.com/?utm_source=facebook&utm_medium=social&utm_campaign=v4-headcount&utm_content=hiublue",
+            "status": "dry-run"
+          }
+        ]
+      },
+      "metrics": {
+        "tenantId": "hiublue",
+        "rows": [
+          {
+            "variantId": "v1-shift",
+            "channel": "instagram",
+            "score": 0
+          },
+          {
+            "variantId": "v1-shift",
+            "channel": "youtube",
+            "score": 0
+          },
+          {
+            "variantId": "v1-shift",
+            "channel": "facebook",
+            "score": 0
+          },
+          {
+            "variantId": "v2-overwhelm",
+            "channel": "instagram",
+            "score": 0
+          },
+          {
+            "variantId": "v2-overwhelm",
+            "channel": "youtube",
+            "score": 0
+          },
+          {
+            "variantId": "v2-overwhelm",
+            "channel": "facebook",
+            "score": 0
+          },
+          {
+            "variantId": "v3-always-on",
+            "channel": "instagram",
+            "score": 0
+          },
+          {
+            "variantId": "v3-always-on",
+            "channel": "youtube",
+            "score": 0
+          },
+          {
+            "variantId": "v3-always-on",
+            "channel": "facebook",
+            "score": 0
+          },
+          {
+            "variantId": "v4-headcount",
+            "channel": "instagram",
+            "score": 0
+          },
+          {
+            "variantId": "v4-headcount",
+            "channel": "youtube",
+            "score": 0
+          },
+          {
+            "variantId": "v4-headcount",
+            "channel": "facebook",
+            "score": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "reyes-strength",
+      "business": "Reyes Strength",
+      "audience": "Busy professionals who want to get strong without living in the gym",
+      "ctaLabel": "Start your free week",
+      "brand": {
+        "ink": "#0c0a09",
+        "ink2": "#1a1614",
+        "ink3": "#241d19",
+        "accent": "#f97316",
+        "accent2": "#fbbf24",
+        "white": "#fafaf9",
+        "muted": "#a8a29e",
+        "line": "rgba(255,255,255,0.10)",
+        "grad": "linear-gradient(120deg, #f97316, #fbbf24)",
+        "font": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Inter, Roboto, Helvetica, Arial, sans-serif"
+      },
+      "talent": {
+        "displayName": "Coach Maya · AI persona",
+        "consent": true
+      },
+      "channels": [
+        "instagram",
+        "tiktok",
+        "youtube"
+      ],
+      "handle": "@reyesstrength",
+      "url": "reyesstrength.com",
+      "postsPerWeek": 3,
+      "stageStatus": {
+        "intake": "ok",
+        "avatar": "attention",
+        "script": "ok",
+        "render": "pending",
+        "review": "ok",
+        "post": "ok",
+        "measure": "pending"
+      },
+      "intake": {
+        "tenantId": "reyes-strength",
+        "business": "Reyes Strength",
+        "audience": "Busy professionals who want to get strong without living in the gym",
+        "knowledge": [
+          "Business: Reyes Strength",
+          "Audience: Busy professionals who want to get strong without living in the gym",
+          "Cadence: 3 posts/week",
+          "Channels: instagram, tiktok, youtube"
+        ],
+        "likeness": {
+          "avatarRef": "tenants/reyes-strength/maya-reference.png",
+          "voiceRef": "tenants/reyes-strength/maya-voice.mp3",
+          "consent": true
+        }
+      },
+      "avatar": {
+        "tenantId": "reyes-strength",
+        "displayName": "Coach Maya · AI persona",
+        "status": "needs-assets",
+        "note": "No render-ready clip for reyes-strength. Generate via Lipsync Studio from talent.avatarRef + talent.voiceRef (see memory higgsfield-ralph-pipeline), then place at video/public/reyes-strength-hero.mp4."
+      },
+      "plan": {
+        "tenantId": "reyes-strength",
+        "variants": [
+          {
+            "id": "rs1-no-time",
+            "angle": "Objection: no time to train",
+            "hook": "You don't need more time.\nYou need a plan that fits it.",
+            "lines": [
+              {
+                "text": "Most people quit because the plan is too big.",
+                "seconds": 2.6
+              },
+              {
+                "text": "Three focused sessions a week. That's it.",
+                "seconds": 2.4
+              },
+              {
+                "text": "Built around your schedule, not against it.",
+                "seconds": 2.6
+              },
+              {
+                "text": "Show up. Follow the plan. Get stronger.",
+                "seconds": 2.4
+              }
+            ],
+            "cta": "Train with Reyes Strength. First week is on us.",
+            "handle": "@reyesstrength",
+            "url": "reyesstrength.com"
+          },
+          {
+            "id": "rs2-form-first",
+            "angle": "Authority: form over ego",
+            "hook": "Lifting heavy means nothing\nif your form is wrong.",
+            "lines": [
+              {
+                "text": "Bad reps build injuries, not muscle.",
+                "seconds": 2.4
+              },
+              {
+                "text": "We coach the movement before the weight.",
+                "seconds": 2.6
+              },
+              {
+                "text": "Every session, eyes on your technique.",
+                "seconds": 2.4
+              },
+              {
+                "text": "Strength that lasts starts with control.",
+                "seconds": 2.6
+              }
+            ],
+            "cta": "Train with Reyes Strength. First week is on us.",
+            "handle": "@reyesstrength",
+            "url": "reyesstrength.com"
+          },
+          {
+            "id": "rs3-busy-pro",
+            "angle": "ICP: the busy professional",
+            "hook": "Desk all day.\nBody paying for it.",
+            "lines": [
+              {
+                "text": "Tight hips. Sore back. No energy by five.",
+                "seconds": 2.6
+              },
+              {
+                "text": "Forty-five minutes, three times a week.",
+                "seconds": 2.4
+              },
+              {
+                "text": "We undo the desk and rebuild the engine.",
+                "seconds": 2.6
+              },
+              {
+                "text": "Feel it in two weeks. See it in six.",
+                "seconds": 2.4
+              }
+            ],
+            "cta": "Train with Reyes Strength. First week is on us.",
+            "handle": "@reyesstrength",
+            "url": "reyesstrength.com"
+          },
+          {
+            "id": "rs4-proof",
+            "angle": "Social proof: results, not promises",
+            "hook": "Real members.\nReal results.",
+            "lines": [
+              {
+                "text": "Sarah deadlifted her bodyweight in twelve weeks.",
+                "seconds": 2.8
+              },
+              {
+                "text": "Marcus dropped pain he'd had for years.",
+                "seconds": 2.6
+              },
+              {
+                "text": "No crash diets. No gimmicks. Just coaching.",
+                "seconds": 2.6
+              },
+              {
+                "text": "Your turn is one session away.",
+                "seconds": 2.4
+              }
+            ],
+            "cta": "Train with Reyes Strength. First week is on us.",
+            "handle": "@reyesstrength",
+            "url": "reyesstrength.com"
+          }
+        ]
+      },
+      "render": {
+        "tenantId": "reyes-strength",
+        "videos": [
+          {
+            "variantId": "rs1-no-time",
+            "compositionId": "reyes-strength__rs1-no-time",
+            "status": "pending",
+            "note": "dry-run"
+          },
+          {
+            "variantId": "rs2-form-first",
+            "compositionId": "reyes-strength__rs2-form-first",
+            "status": "pending",
+            "note": "dry-run"
+          },
+          {
+            "variantId": "rs3-busy-pro",
+            "compositionId": "reyes-strength__rs3-busy-pro",
+            "status": "pending",
+            "note": "dry-run"
+          },
+          {
+            "variantId": "rs4-proof",
+            "compositionId": "reyes-strength__rs4-proof",
+            "status": "pending",
+            "note": "dry-run"
+          }
+        ]
+      },
+      "review": {
+        "tenantId": "reyes-strength",
+        "items": [
+          {
+            "variantId": "rs1-no-time",
+            "status": "approved"
+          },
+          {
+            "variantId": "rs2-form-first",
+            "status": "approved"
+          },
+          {
+            "variantId": "rs3-busy-pro",
+            "status": "approved"
+          },
+          {
+            "variantId": "rs4-proof",
+            "status": "approved"
+          }
+        ]
+      },
+      "post": {
+        "tenantId": "reyes-strength",
+        "posts": [
+          {
+            "variantId": "rs1-no-time",
+            "channel": "instagram",
+            "scheduledAt": "2026-06-06T18:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=instagram&utm_medium=social&utm_campaign=rs1-no-time&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs1-no-time",
+            "channel": "tiktok",
+            "scheduledAt": "2026-06-06T18:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=tiktok&utm_medium=social&utm_campaign=rs1-no-time&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs1-no-time",
+            "channel": "youtube",
+            "scheduledAt": "2026-06-06T18:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=youtube&utm_medium=social&utm_campaign=rs1-no-time&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs2-form-first",
+            "channel": "instagram",
+            "scheduledAt": "2026-06-09T02:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=instagram&utm_medium=social&utm_campaign=rs2-form-first&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs2-form-first",
+            "channel": "tiktok",
+            "scheduledAt": "2026-06-09T02:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=tiktok&utm_medium=social&utm_campaign=rs2-form-first&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs2-form-first",
+            "channel": "youtube",
+            "scheduledAt": "2026-06-09T02:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=youtube&utm_medium=social&utm_campaign=rs2-form-first&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs3-busy-pro",
+            "channel": "instagram",
+            "scheduledAt": "2026-06-11T10:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=instagram&utm_medium=social&utm_campaign=rs3-busy-pro&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs3-busy-pro",
+            "channel": "tiktok",
+            "scheduledAt": "2026-06-11T10:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=tiktok&utm_medium=social&utm_campaign=rs3-busy-pro&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs3-busy-pro",
+            "channel": "youtube",
+            "scheduledAt": "2026-06-11T10:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=youtube&utm_medium=social&utm_campaign=rs3-busy-pro&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs4-proof",
+            "channel": "instagram",
+            "scheduledAt": "2026-06-13T18:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=instagram&utm_medium=social&utm_campaign=rs4-proof&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs4-proof",
+            "channel": "tiktok",
+            "scheduledAt": "2026-06-13T18:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=tiktok&utm_medium=social&utm_campaign=rs4-proof&utm_content=reyes-strength",
+            "status": "dry-run"
+          },
+          {
+            "variantId": "rs4-proof",
+            "channel": "youtube",
+            "scheduledAt": "2026-06-13T18:11:58.032Z",
+            "url": "https://reyesstrength.com/?utm_source=youtube&utm_medium=social&utm_campaign=rs4-proof&utm_content=reyes-strength",
+            "status": "dry-run"
+          }
+        ]
+      },
+      "metrics": {
+        "tenantId": "reyes-strength",
+        "rows": [
+          {
+            "variantId": "rs1-no-time",
+            "channel": "instagram",
+            "score": 0
+          },
+          {
+            "variantId": "rs1-no-time",
+            "channel": "tiktok",
+            "score": 0
+          },
+          {
+            "variantId": "rs1-no-time",
+            "channel": "youtube",
+            "score": 0
+          },
+          {
+            "variantId": "rs2-form-first",
+            "channel": "instagram",
+            "score": 0
+          },
+          {
+            "variantId": "rs2-form-first",
+            "channel": "tiktok",
+            "score": 0
+          },
+          {
+            "variantId": "rs2-form-first",
+            "channel": "youtube",
+            "score": 0
+          },
+          {
+            "variantId": "rs3-busy-pro",
+            "channel": "instagram",
+            "score": 0
+          },
+          {
+            "variantId": "rs3-busy-pro",
+            "channel": "tiktok",
+            "score": 0
+          },
+          {
+            "variantId": "rs3-busy-pro",
+            "channel": "youtube",
+            "score": 0
+          },
+          {
+            "variantId": "rs4-proof",
+            "channel": "instagram",
+            "score": 0
+          },
+          {
+            "variantId": "rs4-proof",
+            "channel": "tiktok",
+            "score": 0
+          },
+          {
+            "variantId": "rs4-proof",
+            "channel": "youtube",
+            "score": 0
+          }
+        ]
+      }
+    }
+  ]
+}
